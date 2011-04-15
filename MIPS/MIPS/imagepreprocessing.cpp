@@ -6,133 +6,86 @@ QWidget(parent)
 
 }
 
-void ImagePreprocessing::gauss(QImage image)
+QImage ImagePreprocessing::singleColorChannel(QImage image, ColorChannel channel)
 {
-	processedImage = image;
+	QImage singleChannelImage(image.size(), QImage::Format_Indexed8);
+	QVector<QRgb> colors(256);
+	for (int i = 0; i < 256; i++)
+	{
+		colors[i] = qRgb(i, i, i);
+	}
+	singleChannelImage.setColorTable(colors);
+	int w = image.width();
+	int h = image.height();
+	for (int x = 0; x < w; x++)
+	{
+		for (int y = 0; y < h; y++)
+		{
+			QRgb px = image.pixel(x, y);
+#ifdef USE_QT_RGB
+			if (channel == ImagePreprocessing::RED)
+			{
+				singleChannelImage.setPixel(x, y, qRed(px));
+			}
+			else if (channel == ImagePreprocessing::GREEN)
+			{
+				singleChannelImage.setPixel(x, y, qGreen(px));
+			}
+			else if (channel == ImagePreprocessing::BLUE)
+			{
+				singleChannelImage.setPixel(x, y, qBlue(px));
+			}
+#else
+			singleChannelImage.setPixel(x, y, ((px >> channel) & 0xff));
+#endif
+		}
+	}
+	return singleChannelImage;
+}
+
+QImage ImagePreprocessing::process8BitImage(QImage image, MipsWeightMatrix matrix, double modulus)
+{
+	QImage eightBitImage = image;
+	int h = image.height();
+	int w = image.width();
+	int radius = matrix.getRadius();
 	if((image.format()==QImage::Format_Indexed8)&&(image.depth()==8))
 	{
-		int h = image.height();
-		int w = image.width();
-
-		unsigned int px1;
-		unsigned int px2;
-		unsigned int px3;
-		unsigned int px4;
-		unsigned int px5;
-		unsigned int px6;
-		unsigned int px7;
-		unsigned int px8;
-		unsigned int px9;
-
-		for(int i = 0; i < w; i++)
-			for(int j = 0;j < h; j++)
+		for (int x = radius; x <= w - radius - 1; x++)
+		{
+			for (int y = radius; y <= h - radius - 1; y++)
 			{
-				if((i < 1)||(j < 1)||(i > w-2)||(j > h-2))
-					continue;
-				px1 = image.pixelIndex(i,j);
-				px2 = image.pixelIndex(i-1,j);
-				px3 = image.pixelIndex(i+1,j);
-				px4 = image.pixelIndex(i,j-1);
-				px5 = image.pixelIndex(i-1,j-1);
-				px6 = image.pixelIndex(i+1,j-1);
-				px7 = image.pixelIndex(i,j+1);
-				px8 = image.pixelIndex(i-1,j+1);
-				px9 = image.pixelIndex(i+1,j+1);
-				px1 = (1*px5+2*px4+1*px6+2*px2+4*px1+2*px3+1*px8+2*px7+1*px9)/16;
-				processedImage.setPixel(i,j,px1);
+				unsigned int px = 0;
+				for (int i = -radius; i <= radius; i++)
+				{
+					for (int j = -radius; j <= radius; j++)
+					{
+						px += image.pixelIndex(x + i, y + j) * matrix.weightAt(i + radius, j + radius);
+					}
+				}
+				eightBitImage.setPixel(x, y, px * modulus);
 			}
-			processedImage.save("D:\\gauss.bmp");
+		}
 	}
-	else if(image.depth()==32)
+	return eightBitImage;
+}
+
+QImage ImagePreprocessing::mergeColorChannel(QImage red, QImage green, QImage blue)
+{
+	QImage mergedImage;
+	if (red.size() == green.size() && red.size() == blue.size())
 	{
-		int h = image.height();
-		int w = image.width();
-
-		unsigned int px1;
-		unsigned int px2;
-		unsigned int px3;
-		unsigned int px4;
-		unsigned int px5;
-		unsigned int px6;
-		unsigned int px7;
-		unsigned int px8;
-		unsigned int px9;
-		unsigned int red;
-		unsigned int green;
-		unsigned int blue;
-		QRgb px;
-		for(int i = 0;i<w;i++)
-			for(int j = 0;j<h;j++)
+		QSize size = red.size();
+		mergedImage = QImage(size, Format_RGB32);
+		int w = mergedImage.width();
+		int h = mergedImage.height();
+		for (int x = 0; x < w; x++)
+		{
+			for (int y = 0; y < h; y++)
 			{
-				if((i<1)||(j<1)||(i>w-2)||(j>h-2))
-					continue;
-				px = image.pixel(i,j);
-				px1 = qRed(px);
-				px = image.pixel(i-1,j);
-				px2 = qRed(px);
-				px = image.pixel(i+1,j);
-				px3 = qRed(px);
-				px = image.pixel(i,j-1);
-				px4 = qRed(px);
-				px = image.pixel(i-1,j-1);
-				px5 = qRed(px);
-				px = image.pixel(i+1,j-1);
-				px6 = qRed(px);
-				px = image.pixel(i,j+1);
-				px7 = qRed(px);
-				px = image.pixel(i-1,j+1);
-				px8 = qRed(px);
-				px = image.pixel(i+1,j+1);
-				px9 = qRed(px);
-				red = (1*px5+2*px4+1*px6+2*px2+4*px1+2*px3+1*px8+2*px7+1*px9)/16;
-				if(red>255)
-					red = 255;
-				px = image.pixel(i,j);
-				px1 = qGreen(px);
-				px = image.pixel(i-1,j);
-				px2 = qGreen(px);
-				px = image.pixel(i+1,j);
-				px3 = qGreen(px);
-				px = image.pixel(i,j-1);
-				px4 = qGreen(px);
-				px = image.pixel(i-1,j-1);
-				px5 = qGreen(px);
-				px = image.pixel(i+1,j-1);
-				px6 = qGreen(px);
-				px = image.pixel(i,j+1);
-				px7 = qGreen(px);
-				px = image.pixel(i-1,j+1);
-				px8 = qGreen(px);
-				px = image.pixel(i+1,j+1);
-				px9 = qGreen(px);
-				green = (1*px5+2*px4+1*px6+2*px2+4*px1+2*px3+1*px8+2*px7+1*px9)/16;
-				if(green>255)
-					green = 255;
-				px = image.pixel(i,j);
-				px1 = qBlue(px);
-				px = image.pixel(i-1,j);
-				px2 = qBlue(px);
-				px = image.pixel(i+1,j);
-				px3 = qBlue(px);
-				px = image.pixel(i,j-1);
-				px4 = qBlue(px);
-				px = image.pixel(i-1,j-1);
-				px5 = qBlue(px);
-				px = image.pixel(i+1,j-1);
-				px6 = qBlue(px);
-				px = image.pixel(i,j+1);
-				px7 = qBlue(px);
-				px = image.pixel(i-1,j+1);
-				px8 = qBlue(px);
-				px = image.pixel(i+1,j+1);
-				px9 = qBlue(px);
-				blue = (1*px5+2*px4+1*px6+2*px2+4*px1+2*px3+1*px8+2*px7+1*px9)/16;
-				if(blue>255)
-					blue = 255;
-				processedImage.setPixel(i,j,qRgb(red,green,blue));
+				mergedImage.setPixel(x, y, qRgb(red.pixel(x, y), green.pixel(x, y), blue.pixel(x, y)));
 			}
-			processedImage.save("D:\\123.jpg");
+		}
 	}
-	else
-		return ;
+	return mergedImage;
 }
