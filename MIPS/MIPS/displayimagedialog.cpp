@@ -1,4 +1,4 @@
-#include "mips_displayDialog.h"
+#include "displayimagedialog.h"
 
 DisplayImageDialog::DisplayImageDialog(QImage image,QWidget *parent) :
 QDialog(parent)

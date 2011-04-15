@@ -3,14 +3,14 @@
 #include <QScrollBar>
 #include <QImageReader>
 
-#include "mips_mainwindow.h"
+#include "mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), scaleFactor(1)
 {
     setupUi(this);
 
-    ip = new ImagePreprocessing;  
+    ip = new ImagePreprocessing;
 
     QObject::connect(actionGauss,SIGNAL(triggered()),this,SLOT(slotSmoothnessGauss()));
 
@@ -170,4 +170,3 @@ void MainWindow::on_actionAbout_triggered()
 {
     QMessageBox::about(this, tr("About The MIPS"), htmlAboutText);
 }
-

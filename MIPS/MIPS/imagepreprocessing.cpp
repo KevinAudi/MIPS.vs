@@ -1,4 +1,4 @@
-#include "mips_smoothness.h"
+#include "imagepreprocessing.h"
 
 ImagePreprocessing::ImagePreprocessing(QWidget *parent) :
 QWidget(parent)

@@ -4,8 +4,8 @@
 #include <QScrollArea>
 
 #include "ui_MainWindow.h"
-#include "mips_smoothness.h"
-#include "mips_displayDialog.h"
+#include "imagepreprocessing.h"
+#include "displayimagedialog.h"
 
 class MainWindow : public QMainWindow, private Ui::MainWindow
 {
