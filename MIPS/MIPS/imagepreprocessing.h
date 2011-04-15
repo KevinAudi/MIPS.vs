@@ -7,9 +7,7 @@ class ImagePreprocessing : public QImage
 {
 	Q_OBJECT
 public:
-	explicit ImagePreprocessing(QWidget *parent = 0);
-	
-	//void gauss(QImage image);
+	explicit ImagePreprocessing(QWidget *parent = 0);	
 
 	enum ColorChannel {RED = 16, GREEN = 8, BLUE = 0, ALPHA = 24};
  
