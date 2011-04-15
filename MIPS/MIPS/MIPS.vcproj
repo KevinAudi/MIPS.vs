@@ -181,6 +181,10 @@
 				RelativePath=".\mipsimage.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\previewwidget.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -267,6 +271,10 @@
 			</File>
 			<File
 				RelativePath=".\mipsimage.h"
+				>
+			</File>
+			<File
+				RelativePath=".\previewwidget.h"
 				>
 			</File>
 		</Filter>
