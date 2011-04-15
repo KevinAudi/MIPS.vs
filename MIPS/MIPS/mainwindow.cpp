@@ -2,6 +2,7 @@
 #include <QHeaderView>
 #include <QScrollBar>
 #include <QImageReader>
+#include "imagesmoothness.h"
 
 #include "mainwindow.h"
 
@@ -151,9 +152,33 @@ void MainWindow::on_treeView_clicked ( const QModelIndex &index )
 
 void MainWindow::slotSmoothnessGauss()
 {
-    ip->processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));
-//    ip->gauss(ip->processingImage);   
-    dialog = new DisplayImageDialog(ip->processedImage,this);
+    QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));
+	TemplateMatrix matrix(1);
+	for (int i = -1; i <= 1; i++)
+	{
+		for (int j = -1; j <= 1; j++)
+		{
+			int w = 0;
+			int res = i * i + j * j;
+			switch(res)
+			{
+			case 0:
+				w = 4;
+				break;
+			case 1:
+				w = 2;
+				break;
+			case 2:
+				w = 1;
+				break;
+			default:
+				w = 0;
+			}
+			matrix.setWeightAt(i + 1, j + 1, w);
+		}
+	}
+	processingImage = ImageSmoothness::gaussTemplate(processingImage, matrix, 1.0 / 16.0);
+    dialog = new DisplayImageDialog(processingImage,this);
     dialog->exec();
     delete dialog;
 }

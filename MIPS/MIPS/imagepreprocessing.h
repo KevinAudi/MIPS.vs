@@ -11,9 +11,9 @@ public:
 
 	enum ColorChannel {RED = 16, GREEN = 8, BLUE = 0, ALPHA = 24};
  
-	QImage singleColorChannel(QImage image, ColorChannel channel);
-	QImage process8BitImage(QImage image, TemplateMatrix matrix, double modulus);
-	QImage mergeColorChannel(QImage red, QImage green, QImage blue);
+	static QImage singleColorChannel(QImage image, ColorChannel channel);
+	static QImage process8BitImage(QImage image, TemplateMatrix matrix, double modulus);
+	static QImage mergeColorChannel(QImage red, QImage green, QImage blue);
 
 	QImage processingImage;
 	QImage processedImage;

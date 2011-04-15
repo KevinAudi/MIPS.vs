@@ -10,7 +10,7 @@ public:
 	ImageSmoothness(QObject *parent);
 	~ImageSmoothness();
 
-	QImage gaussTemplate(QImage image, TemplateMatrix matrix, double modulus);
+	static QImage gaussTemplate(QImage image, TemplateMatrix matrix, double modulus);
 
 private:
 	
