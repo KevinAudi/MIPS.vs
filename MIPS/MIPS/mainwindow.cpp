@@ -2,7 +2,7 @@
 #include <QHeaderView>
 #include <QScrollBar>
 #include <QImageReader>
-#include "imagesmoothness.h"
+#include "imagesmoother.h"
 
 #include "mainwindow.h"
 
@@ -11,6 +11,11 @@ MainWindow::MainWindow(QWidget *parent)
 {
     setupUi(this);
 
+<<<<<<< HEAD
+=======
+    ip = new ImagePreprocessor;
+
+>>>>>>> 781706b6060b05aca9fb685b913b727724d14f59
     QObject::connect(actionGauss,SIGNAL(triggered()),this,SLOT(slotSmoothnessGauss()));
 
     dirModel = new QDirModel(this);
@@ -175,8 +180,13 @@ void MainWindow::slotSmoothnessGauss()
 			matrix.setWeightAt(i + 1, j + 1, w);
 		}
 	}
+<<<<<<< HEAD
 	processingImage = ImageSmoothness::gaussTemplate(processingImage, matrix, 1.0 / 16.0);
     DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);
+=======
+	processingImage = ImageSmoother::gaussTemplate(processingImage, matrix, 1.0 / 16.0);
+    dialog = new DisplayImageDialog(processingImage,this);
+>>>>>>> 781706b6060b05aca9fb685b913b727724d14f59
     dialog->exec();
     delete dialog;
 }

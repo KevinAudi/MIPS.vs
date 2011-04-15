@@ -4,7 +4,7 @@
 #include <QScrollArea>
 
 #include "ui_MainWindow.h"
-#include "imagepreprocessing.h"
+#include "imagepreprocessor.h"
 #include "displayimagedialog.h"
 
 class MainWindow : public QMainWindow, private Ui::MainWindow
@@ -39,4 +39,9 @@ private:
 	QStringList::const_iterator currentFile;
 
 	double scaleFactor;
+<<<<<<< HEAD
+=======
+	ImagePreprocessor *ip;
+	DisplayImageDialog *dialog;
+>>>>>>> 781706b6060b05aca9fb685b913b727724d14f59
 };
