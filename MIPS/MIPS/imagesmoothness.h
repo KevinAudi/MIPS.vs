@@ -2,8 +2,9 @@
 #define IMAGESMOOTHNESS_H
 
 #include <QImage>
+#include "imagepreprocessing.h"
 
-class ImageSmoothness : public QImage
+class ImageSmoothness : public QImage,private ImagePreprocessing
 {
 	Q_OBJECT
 
