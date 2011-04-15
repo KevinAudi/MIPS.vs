@@ -14,9 +14,6 @@ public:
 	static QImage singleColorChannel(QImage image, ColorChannel channel);
 	static QImage process8BitImage(QImage image, TemplateMatrix matrix, double modulus);
 	static QImage mergeColorChannel(QImage red, QImage green, QImage blue);
-
-	QImage processingImage;
-	QImage processedImage;
 	
 };
 

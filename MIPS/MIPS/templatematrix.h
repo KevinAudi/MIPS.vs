@@ -7,17 +7,19 @@ class TemplateMatrix
 public:
 	TemplateMatrix(int radius);
 	~TemplateMatrix();	 
-	 
-	//void MipsWeightMatrix(int radius);
-	int weightAt(int x_coordinate, int y_coordinate);	
-	void setWeightAt(int x_coordinate, int  y_coordinate, int value);
+
+	inline int TemplateMatrix::weightAt(int xCoordinate, int yCoordinate)
+	{
+		return weights[(xCoordinate << power) | yCoordinate];
+	}	
+	void setWeightAt(int xCoordinate, int  yCoordinate, int value);
 	int getRadius();	
 
 private:
-		int radius;
-		int width;
-		int power;
-		QVector<int> weight;	
+	int radius;
+	int width;
+	int power;
+	QVector<int> weights;	
 };
 
 #endif // TEMPLATEMATRIX_H

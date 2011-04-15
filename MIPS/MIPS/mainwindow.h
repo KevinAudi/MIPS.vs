@@ -15,16 +15,16 @@ public:
 	MainWindow(QWidget *parent = 0);
 	~MainWindow();
 
-	private slots:
-		void on_actionForward_triggered();
-		void on_actionBack_triggered();
-		void on_actionZoomOut_triggered();
-		void on_actionZoomIn_triggered();
-		void on_actionActualSize_triggered();
-		void on_actionAbout_triggered();
-		void on_treeView_clicked(const QModelIndex & index);
+private slots:
+	void on_actionForward_triggered();
+	void on_actionBack_triggered();
+	void on_actionZoomOut_triggered();
+	void on_actionZoomIn_triggered();
+	void on_actionActualSize_triggered();
+	void on_actionAbout_triggered();
+	void on_treeView_clicked(const QModelIndex & index);
 
-		void slotSmoothnessGauss();
+	void slotSmoothnessGauss();
 
 private:
 	void displayImage(const QString &fileName);
@@ -39,6 +39,4 @@ private:
 	QStringList::const_iterator currentFile;
 
 	double scaleFactor;
-	ImagePreprocessing *ip;
-	DisplayImageDialog *dialog;
 };

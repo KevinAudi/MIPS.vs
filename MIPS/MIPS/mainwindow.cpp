@@ -11,8 +11,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     setupUi(this);
 
-    ip = new ImagePreprocessing;
-
     QObject::connect(actionGauss,SIGNAL(triggered()),this,SLOT(slotSmoothnessGauss()));
 
     dirModel = new QDirModel(this);
@@ -178,7 +176,7 @@ void MainWindow::slotSmoothnessGauss()
 		}
 	}
 	processingImage = ImageSmoothness::gaussTemplate(processingImage, matrix, 1.0 / 16.0);
-    dialog = new DisplayImageDialog(processingImage,this);
+    DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);
     dialog->exec();
     delete dialog;
 }

@@ -51,14 +51,14 @@ QImage ImagePreprocessing::process8BitImage(QImage image, TemplateMatrix matrix,
 	int radius = matrix.getRadius();
 	if((image.format()==QImage::Format_Indexed8)&&(image.depth()==8))
 	{
-		for (int x = radius; x <= w - radius - 1; x++)
+		for (int x = radius; x <= w - radius - 1; ++x)
 		{
-			for (int y = radius; y <= h - radius - 1; y++)
+			for (int y = radius; y <= h - radius - 1; ++y)
 			{
 				unsigned int px = 0;
-				for (int i = -radius; i <= radius; i++)
+				for (int i = -radius; i <= radius; ++i)
 				{
-					for (int j = -radius; j <= radius; j++)
+					for (int j = -radius; j <= radius; ++j)
 					{
 						px += image.pixelIndex(x + i, y + j) * matrix.weightAt(i + radius, j + radius);
 					}
@@ -79,9 +79,9 @@ QImage ImagePreprocessing::mergeColorChannel(QImage red, QImage green, QImage bl
 		mergedImage = QImage(size, Format_RGB32);
 		int w = mergedImage.width();
 		int h = mergedImage.height();
-		for (int x = 0; x < w; x++)
+		for (int x = 0; x < w; ++x)
 		{
-			for (int y = 0; y < h; y++)
+			for (int y = 0; y < h; ++y)
 			{
 				mergedImage.setPixel(x, y, qRgb(red.pixel(x, y), green.pixel(x, y), blue.pixel(x, y)));
 			}
