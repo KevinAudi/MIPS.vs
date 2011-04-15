@@ -8,16 +8,15 @@ public:
 	TemplateMatrix(int radius);
 	~TemplateMatrix();	 
 	 
-	//void MipsWeightMatrix(int radius);
-	int weightAt(int x_coordinate, int y_coordinate);	
-	void setWeightAt(int x_coordinate, int  y_coordinate, int value);
+	int weightAt(int x, int y);	// x and y are both coordinates
+	void setWeightAt(int x, int  y, int value);
 	int getRadius();	
 
 private:
 		int radius;
 		int width;
 		int power;
-		QVector<int> weight;	
+		QVector<int> weights;	
 };
 
 #endif // TEMPLATEMATRIX_H

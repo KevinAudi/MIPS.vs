@@ -10,10 +10,10 @@ TemplateMatrix::TemplateMatrix(int radius)
 		width <<= 1;
 		power++;
 	}
-	this->weight = QVector<int>(width  * (2 * radius + 1));
+	this->weights = QVector<int>(width  * (2 * radius + 1));
 	for (int i = 0; i < width * (2 * radius + 1); i++)
 	{
-		weight[i] = 0;
+		weights[i] = 0;
 	}
 }
 
@@ -22,14 +22,14 @@ TemplateMatrix::~TemplateMatrix()
 
 }
 
-int TemplateMatrix::weightAt(int xCoordinate, int yCoordinate)
+int TemplateMatrix::weightAt(int x, int y)
 {
-	 return weight[(xCoordinate << power) | yCoordinate];
+	 return weights[(x << power) | y];
 }
 
-void TemplateMatrix::setWeightAt(int xCoordinate, int  yCoordinate, int value)
+void TemplateMatrix::setWeightAt(int x, int  y, int value)
 {
-	weight[(xCoordinate << power) | yCoordinate] = value;
+	weights[(x << power) | y] = value;
 }
 
 int TemplateMatrix::getRadius()

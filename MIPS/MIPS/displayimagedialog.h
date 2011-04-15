@@ -2,8 +2,8 @@
 #define DISPLAYIMAGEDIALOG_H
 
 #include <QDialog>
-#include <QScrollArea>
-#include <QLabel>
+//#include <QScrollArea>
+//#include <QLabel>
 #include <QHBoxLayout>
 
 class DisplayImageDialog : public QDialog
