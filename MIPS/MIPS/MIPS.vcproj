@@ -177,6 +177,10 @@
 				RelativePath=".\mainwindow.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\mipsimage.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -260,6 +264,10 @@
 						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\mipsimage.h"
+				>
 			</File>
 		</Filter>
 		<Filter
