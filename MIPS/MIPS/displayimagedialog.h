@@ -11,16 +11,6 @@ class DisplayImageDialog : public QDialog
 	Q_OBJECT
 public:
 	explicit DisplayImageDialog(QImage image, QWidget *parent = 0);
-
-	public slots:
-
-private:
-/*	QScrollArea *displayScrollArea;
-	QLabel *displayLabel;
-	QWidget *scrollAreaWidgetContents;
-	QHBoxLayout *hboxLayout;
-	QHBoxLayout *horizontalLayout;
-	*/
 };
 
 #endif // DISPLAYIMAGEDIALOG_H

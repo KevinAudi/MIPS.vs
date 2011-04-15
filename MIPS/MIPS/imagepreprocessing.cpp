@@ -1,7 +1,7 @@
 #include "imagepreprocessing.h"
 
 ImagePreprocessing::ImagePreprocessing(QWidget *parent) :
-QWidget(parent)
+QImage()
 {   
 
 }
@@ -43,7 +43,7 @@ QImage ImagePreprocessing::singleColorChannel(QImage image, ColorChannel channel
 	return singleChannelImage;
 }
 
-QImage ImagePreprocessing::process8BitImage(QImage image, MipsWeightMatrix matrix, double modulus)
+QImage ImagePreprocessing::process8BitImage(QImage image, TemplateMatrix matrix, double modulus)
 {
 	QImage eightBitImage = image;
 	int h = image.height();

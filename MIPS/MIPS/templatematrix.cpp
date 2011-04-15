@@ -1,20 +1,10 @@
 #include "templatematrix.h"
 
-TemplateMatrix::TemplateMatrix(QObject *parent)
-	: QMatrix(parent)
-{
-
-}
-
-TemplateMatrix::~TemplateMatrix()
-{
-
-}
-
-void TemplateMatrix:: MipsWeightMatrix(int radius)
+TemplateMatrix::TemplateMatrix(int radius)
 {
 	width = 1;
 	power = 0;
+	this->radius = radius;
 	while (width < 2 * radius + 1)
 	{
 		width <<= 1;
@@ -25,17 +15,21 @@ void TemplateMatrix:: MipsWeightMatrix(int radius)
 	{
 		weight[i] = 0;
 	}
-	this->radius = radius;
 }
 
-int TemplateMatrix::weightAt(int x_coordinate, int y_coordinate)
+TemplateMatrix::~TemplateMatrix()
 {
-	 return weight[(x_coordinate << power) | y_coordinate];
+
 }
 
-void TemplateMatrix::setWeightAt(int x_coordinate, int  y_coordinate, int value)
+int TemplateMatrix::weightAt(int xCoordinate, int yCoordinate)
 {
-	weight[(x_coordinate << power) | y_coordinate] = value;
+	 return weight[(xCoordinate << power) | yCoordinate];
+}
+
+void TemplateMatrix::setWeightAt(int xCoordinate, int  yCoordinate, int value)
+{
+	weight[(xCoordinate << power) | yCoordinate] = value;
 }
 
 int TemplateMatrix::getRadius()

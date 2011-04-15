@@ -152,7 +152,7 @@ void MainWindow::on_treeView_clicked ( const QModelIndex &index )
 void MainWindow::slotSmoothnessGauss()
 {
     ip->processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));
-    ip->gauss(ip->processingImage);   
+//    ip->gauss(ip->processingImage);   
     dialog = new DisplayImageDialog(ip->processedImage,this);
     dialog->exec();
     delete dialog;

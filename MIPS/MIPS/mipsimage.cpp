@@ -1,6 +1,7 @@
 #include "mipsimage.h"
 #include <QDebug>
 #include <QApplication>
+
 MipsImage::MipsImage() : QImage()
 {
 }
@@ -10,7 +11,7 @@ MipsImage::MipsImage(const QImage &image) : QImage(image)
 }
 
 
-QImage MipsImage::smoothnessGauss(QImage image, MipsWeightMatrix matrix, double modulus)
+QImage MipsImage::smoothnessGauss( QImage image, TemplateMatrix matrix, double modulus )
 {
     QImage  gaussedImage;
     if (image.format() == QImage::Format_Indexed8 && image.depth() == 8)
@@ -68,13 +69,13 @@ QImage MipsImage::singleColorChannel(QImage image, ColorChannel channel)
     return singleChannelImage;
 }
 
-QImage MipsImage::gauss8BitImage(QImage image, MipsWeightMatrix matrix, double modulus)
+QImage MipsImage::gauss8BitImage(QImage image, TemplateMatrix matrix, double modulus)
 {
     QImage gaussedImage = image;
     int h = image.height();
     int w = image.width();
     int radius = matrix.getRadius();
-    if((image.format()==QImage::Format_Indexed8)&&(image.depth()==8))
+    if((image.format() == QImage::Format_Indexed8) && (image.depth() == 8))
     {
         for (int x = radius; x <= w - radius - 1; x++)
         {

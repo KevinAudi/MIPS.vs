@@ -9,17 +9,4 @@ QDialog(parent)
 	QHBoxLayout *layout = new QHBoxLayout;
 	layout->addWidget(preView);
 	this->setLayout(layout);
-	/*
-	displayScrollArea = new QScrollArea(this);
-	displayScrollArea->setWidgetResizable(true);
-	scrollAreaWidgetContents = new QWidget();
-	horizontalLayout = new QHBoxLayout(scrollAreaWidgetContents);
-	displayLabel = new QLabel(scrollAreaWidgetContents);
-	displayLabel->setPixmap(QPixmap::fromImage(image));
-	horizontalLayout->addWidget(displayLabel);
-	displayScrollArea->setWidget(scrollAreaWidgetContents);
-	hboxLayout = new QHBoxLayout;
-	this->setLayout(hboxLayout);
-	hboxLayout->addWidget(displayScrollArea);
-	*/
 }

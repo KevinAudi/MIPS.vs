@@ -1,17 +1,14 @@
 #ifndef TEMPLATEMATRIX_H
 #define TEMPLATEMATRIX_H
+#include <QVector>
 
-#include <QMatrix>
-
-class TemplateMatrix : public QMatrix
+class TemplateMatrix
 {
-	Q_OBJECT
-
 public:
-	TemplateMatrix(QObject *parent);
+	TemplateMatrix(int radius);
 	~TemplateMatrix();	 
 	 
-	void MipsWeightMatrix(int radius);
+	//void MipsWeightMatrix(int radius);
 	int weightAt(int x_coordinate, int y_coordinate);	
 	void setWeightAt(int x_coordinate, int  y_coordinate, int value);
 	int getRadius();	

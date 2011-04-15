@@ -1,7 +1,7 @@
 #include "imagesmoothness.h"
 
 ImageSmoothness::ImageSmoothness(QObject *parent)
-	: QImage(parent)
+	: ImagePreprocessing()
 {
 
 }
@@ -11,7 +11,7 @@ ImageSmoothness::~ImageSmoothness()
 
 }
 
-QImage ImageSmoothness:: gaussTemplate(QImage image, MipsWeightMatrix matrix, double modulus)
+QImage ImageSmoothness:: gaussTemplate(QImage image, TemplateMatrix matrix, double modulus)
 {
 	QImage  gaussedImage;
 	if (image.format() == QImage::Format_Indexed8 && image.depth() == 8)

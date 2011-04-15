@@ -5,7 +5,6 @@ PreViewWidget::PreViewWidget(QWidget *parent) : QWidget(parent)
 {
 	scene = new QGraphicsScene(this);
 	scene->setItemIndexMethod(QGraphicsScene::NoIndex);
-	//scene->setSceneRect(0, 0, 1000, 1000);
 	view = new QGraphicsView(scene);
 	view->setDragMode(QGraphicsView::ScrollHandDrag);
 	item = scene->addPixmap(QPixmap());
