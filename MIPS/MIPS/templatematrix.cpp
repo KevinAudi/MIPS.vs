@@ -19,20 +19,9 @@ TemplateMatrix::~TemplateMatrix()
 
 }
 
-<<<<<<< HEAD
-void TemplateMatrix::setWeightAt(int xCoordinate, int  yCoordinate, int value)
-{
-	weights[(xCoordinate << power) | yCoordinate] = value;
-=======
-int TemplateMatrix::weightAt(int x, int y)
-{
-	 return weights[(x << power) | y];
-}
-
 void TemplateMatrix::setWeightAt(int x, int  y, int value)
 {
 	weights[(x << power) | y] = value;
->>>>>>> 781706b6060b05aca9fb685b913b727724d14f59
 }
 
 int TemplateMatrix::getRadius()

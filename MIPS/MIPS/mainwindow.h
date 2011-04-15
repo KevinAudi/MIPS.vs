@@ -39,9 +39,4 @@ private:
 	QStringList::const_iterator currentFile;
 
 	double scaleFactor;
-<<<<<<< HEAD
-=======
-	ImagePreprocessor *ip;
-	DisplayImageDialog *dialog;
->>>>>>> 781706b6060b05aca9fb685b913b727724d14f59
 };
