@@ -2,6 +2,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QStyle>
+#include <QDebug>
 
 PreViewWidget::PreViewWidget(QWidget *parent) : QWidget(parent)
 {
@@ -53,6 +54,8 @@ PreViewWidget::PreViewWidget(QWidget *parent) : QWidget(parent)
 	connect(zoomFitBtn, SIGNAL(clicked()), this, SLOT(zoomFit()));
 	connect(zoomResetBtn, SIGNAL(clicked()), this, SLOT(zoomReset()));
 	connect(zoomSlider, SIGNAL(valueChanged(int)), this, SLOT(zoomRateChange(int)));
+	connect(zoomInBtn, SIGNAL(clicked()), this, SLOT(zoomRateInc()));
+	connect(zoomOutBtn, SIGNAL(clicked()), this, SLOT(zoomRateDec()));
 	zoomSlider->setValue(100);
 
 	QLayout *toolLayout = new QHBoxLayout;
@@ -79,11 +82,28 @@ PreViewWidget::~PreViewWidget(void)
 void PreViewWidget::setImage( QImage image )
 {
 	item->setPixmap(QPixmap::fromImage(image));
+	viewSizeF = item->boundingRect().size();
+	zoomSlider->setValue(100);
+	zoomRateChange(100);
 }
 
 void PreViewWidget::zoomFit()
 {
-	zoomSlider->setValue(50);
+	QSizeF currentViewSize = view->size();
+	double factor = currentViewSize.width() / viewSizeF.width();
+	if (viewSizeF.height() * factor > currentViewSize.height())
+	{
+		factor = currentViewSize.height() / viewSizeF.height();
+	}
+	if (factor < 0.1)
+	{
+		factor = 0.1;
+	}
+	if (factor > 4)
+	{
+		factor = 4;
+	}
+	zoomSlider->setValue(100 * factor);
 }
 
 void PreViewWidget::zoomReset()
@@ -95,5 +115,15 @@ void PreViewWidget::zoomRateChange( int rate )
 {
 	qreal factor = 1.0 * rate / 100.0;
 	item->setScale(factor);
-	//scene->setSceneRect(item->boundingRect());
+	view->setSceneRect(QRectF(QPointF(0, 0), viewSizeF * factor));
+}
+
+void PreViewWidget::zoomRateInc()
+{
+	zoomSlider->setValue(zoomSlider->value() + 1);
+}
+
+void PreViewWidget::zoomRateDec()
+{
+	zoomSlider->setValue(zoomSlider->value() - 1);
 }

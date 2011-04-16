@@ -45,7 +45,7 @@ QImage ImagePreprocessor::singleColorChannel(QImage image, ColorChannel channel)
 
 QImage ImagePreprocessor::process8BitImageInTemplate(QImage image, TemplateMatrix matrix, double modulus)
 {
-	QImage eightBitImage = image;
+	//QImage eightBitImage = image;
 	int h = image.height();
 	int w = image.width();
 	int radius = matrix.getRadius();
@@ -63,11 +63,13 @@ QImage ImagePreprocessor::process8BitImageInTemplate(QImage image, TemplateMatri
 						px += image.pixelIndex(x + i, y + j) * matrix.weightAt(i + radius, j + radius);
 					}
 				}
-				eightBitImage.setPixel(x, y, px * modulus);
+				//eightBitImage.setPixel(x, y, px * modulus);
+                  image.setPixel(x, y, px * modulus);
 			}
 		}
 	}
-	return eightBitImage;
+	//return eightBitImage;
+	return image;
 }
 
 QImage ImagePreprocessor::mergeColorChannel(QImage red, QImage green, QImage blue)

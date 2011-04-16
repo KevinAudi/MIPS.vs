@@ -8,6 +8,7 @@
 #include <QToolButton>
 #include <QLabel>
 #include <QSpinBox>
+#include <QSizeF>
 
 
 class PreViewWidget :
@@ -30,8 +31,12 @@ private:
 	QSpinBox *zoomRateSpin;
 	QToolButton *zoomResetBtn;
 	QToolButton *zoomFitBtn;
+
+	QSizeF viewSizeF;
 private slots:
 	void zoomFit();
 	void zoomReset();
 	void zoomRateChange(int rate);
+	void zoomRateInc();
+	void zoomRateDec();
 };

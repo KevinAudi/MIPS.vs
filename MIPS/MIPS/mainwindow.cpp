@@ -2,9 +2,12 @@
 #include <QHeaderView>
 #include <QScrollBar>
 #include <QImageReader>
-#include "imagesmoother.h"
 
+//#include <iostream>
+#include "imagesmoother.h"
 #include "mainwindow.h"
+
+//using namespace std;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), scaleFactor(1)
@@ -257,7 +260,7 @@ void MainWindow::slotMF5InSmoother()
 
 void MainWindow::slotMF9InSmoother()
 {
-	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));
+	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));	
 	processingImage = ImageSmoother::useMedianFilter(processingImage,9);
 	DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);
 	dialog->exec();
