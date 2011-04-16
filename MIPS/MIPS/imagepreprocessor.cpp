@@ -43,7 +43,7 @@ QImage ImagePreprocessor::singleColorChannel(QImage image, ColorChannel channel)
 	return singleChannelImage;
 }
 
-QImage ImagePreprocessor::process8BitImage(QImage image, TemplateMatrix matrix, double modulus)
+QImage ImagePreprocessor::process8BitImageInTemplate(QImage image, TemplateMatrix matrix, double modulus)
 {
 	QImage eightBitImage = image;
 	int h = image.height();
@@ -88,4 +88,65 @@ QImage ImagePreprocessor::mergeColorChannel(QImage red, QImage green, QImage blu
 		}
 	}
 	return mergedImage;
+}
+
+int ImagePreprocessor::getMedian(int buffer[], int termsNumber)
+{
+	int i,j,temp,flag;
+	for (i = 1; i < termsNumber; i++)
+	{
+		for (j = termsNumber - 1,flag = 0; j >=i; j--)
+		{
+			if (buffer[j] > buffer[j +1])
+			{
+				temp  = buffer[j];
+				buffer[j] = buffer[j+1];
+				buffer[j+1] = temp;
+				flag = 1;
+			}
+		}
+		if (flag == 0)
+			break;       
+	}
+	return(buffer[termsNumber / 2]);
+}
+
+QImage ImagePreprocessor::process8BitImageInMF(QImage image,int flag)
+{
+	QImage eightBitImage = image;
+	//int number = 9;
+	/*QVector <int> buffer;*/
+	int buffer[9] = {0};
+	int h = image.height();
+	int w = image.width();
+	int pixelValue;
+	 
+	if((image.format()==QImage::Format_Indexed8)&&(image.depth()==8))
+	{
+		for (int i = 1; i < h - 1; i++)
+		{
+			for (int j= 1; j < w - 1; j++)
+			{
+				 buffer[0] = image.pixelIndex(i - 1,j);
+				 buffer[1] = image.pixelIndex(i,j);
+				 buffer[2] = image.pixelIndex(i + 1,j);
+				 buffer[3] = image.pixelIndex(i,j - 1);
+				 buffer[4] = image.pixelIndex(i,j +1);
+				 if (flag == 9)
+				 {
+					 buffer[5] = image.pixelIndex(i - 1,j - 1);
+					 buffer[6] = image.pixelIndex(i - 1,j +1);
+					 buffer[7] = image.pixelIndex(i + 1,j - 1);
+					 buffer[8] = image.pixelIndex(i + 1,j +1);
+				 }
+                 pixelValue = getMedian(buffer,flag);
+				 if (pixelValue > 255)
+				    pixelValue = 255;
+				 if(pixelValue < 0)
+					 pixelValue = 0;
+				 eightBitImage.setPixel(i, j, pixelValue);
+			}
+		}
+	}
+	return eightBitImage;
 }
