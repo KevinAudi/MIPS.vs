@@ -12,11 +12,11 @@ public:
 	enum ColorChannel {RED = 16, GREEN = 8, BLUE = 0, ALPHA = 24};
  
 	static QImage singleColorChannel(QImage image, ColorChannel channel);
-	static QImage process8BitImage(QImage image, TemplateMatrix matrix, double modulus);
+	static QImage process8BitImageInTemplate(QImage image, TemplateMatrix matrix, double modulus);
 	static QImage mergeColorChannel(QImage red, QImage green, QImage blue);
 
-	/*QImage processingImage;
-	QImage processedImage;*/
+	static int getMedian(int buffer[], int termsNumber); // sort and get the middle value
+	static QImage process8BitImageInMF(QImage image,int flag);//flag indicates MF5 or MF9
 	
 };
 

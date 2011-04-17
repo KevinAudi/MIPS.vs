@@ -43,9 +43,9 @@ QImage ImagePreprocessor::singleColorChannel(QImage image, ColorChannel channel)
 	return singleChannelImage;
 }
 
-QImage ImagePreprocessor::process8BitImage(QImage image, TemplateMatrix matrix, double modulus)
+QImage ImagePreprocessor::process8BitImageInTemplate(QImage image, TemplateMatrix matrix, double modulus)
 {
-	QImage eightBitImage = image;
+	//QImage eightBitImage = image;
 	int h = image.height();
 	int w = image.width();
 	int radius = matrix.getRadius();
@@ -63,11 +63,13 @@ QImage ImagePreprocessor::process8BitImage(QImage image, TemplateMatrix matrix, 
 						px += image.pixelIndex(x + i, y + j) * matrix.weightAt(i + radius, j + radius);
 					}
 				}
-				eightBitImage.setPixel(x, y, px * modulus);
+				//eightBitImage.setPixel(x, y, px * modulus);
+                  image.setPixel(x, y, px * modulus);
 			}
 		}
 	}
-	return eightBitImage;
+	//return eightBitImage;
+	return image;
 }
 
 QImage ImagePreprocessor::mergeColorChannel(QImage red, QImage green, QImage blue)
@@ -88,4 +90,65 @@ QImage ImagePreprocessor::mergeColorChannel(QImage red, QImage green, QImage blu
 		}
 	}
 	return mergedImage;
+}
+
+int ImagePreprocessor::getMedian(int buffer[], int termsNumber)
+{
+	int i,j,temp,flag;
+	for (i = 1; i < termsNumber; i++)
+	{
+		for (j = termsNumber - 1,flag = 0; j >=i; j--)
+		{
+			if (buffer[j] > buffer[j +1])
+			{
+				temp  = buffer[j];
+				buffer[j] = buffer[j+1];
+				buffer[j+1] = temp;
+				flag = 1;
+			}
+		}
+		if (flag == 0)
+			break;       
+	}
+	return(buffer[termsNumber / 2]);
+}
+
+QImage ImagePreprocessor::process8BitImageInMF(QImage image,int flag)
+{
+	QImage eightBitImage = image;
+	//int number = 9;
+	/*QVector <int> buffer;*/
+	int buffer[9] = {0};
+	int h = image.height();
+	int w = image.width();
+	int pixelValue;
+	 
+	if((image.format() == QImage::Format_Indexed8) && (image.depth() == 8))
+	{
+		for (int x = 1; x < w - 1; x++)
+		{
+			for (int y= 1; y < h - 1; y++)
+			{
+				 buffer[0] = image.pixelIndex(x - 1,y);
+				 buffer[1] = image.pixelIndex(x,y);
+				 buffer[2] = image.pixelIndex(x + 1,y);
+				 buffer[3] = image.pixelIndex(x,y - 1);
+				 buffer[4] = image.pixelIndex(x,y +1);
+				 if (flag == 9)
+				 {
+					 buffer[5] = image.pixelIndex(x - 1,y - 1);
+					 buffer[6] = image.pixelIndex(x - 1,y +1);
+					 buffer[7] = image.pixelIndex(x + 1,y - 1);
+					 buffer[8] = image.pixelIndex(x + 1,y +1);
+				 }
+                 pixelValue = getMedian(buffer,flag);
+				 if (pixelValue > 255)
+				    pixelValue = 255;
+				 if(pixelValue < 0)
+					 pixelValue = 0;
+				 eightBitImage.setPixel(x, y, pixelValue);
+			}
+		}
+	}
+	return eightBitImage;
 }

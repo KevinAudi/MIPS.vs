@@ -25,7 +25,7 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>172</width>
+         <width>169</width>
          <height>241</height>
         </rect>
        </property>
@@ -97,7 +97,24 @@
     <property name="title">
      <string>S&amp;moothness</string>
     </property>
-    <addaction name="actionGauss"/>
+    <widget class="QMenu" name="menuNeighbhAveraging">
+     <property name="title">
+      <string>Neighbh Averaging</string>
+     </property>
+     <addaction name="actionGauss_2"/>
+     <addaction name="actionBox_2"/>
+     <addaction name="actionEight_2"/>
+     <addaction name="actionTen_2"/>
+    </widget>
+    <widget class="QMenu" name="menuMedian_Filter">
+     <property name="title">
+      <string>Median Filter</string>
+     </property>
+     <addaction name="actionMF9"/>
+     <addaction name="actionMF5"/>
+    </widget>
+    <addaction name="menuNeighbhAveraging"/>
+    <addaction name="menuMedian_Filter"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -254,9 +271,49 @@
     <string>Save</string>
    </property>
   </action>
-  <action name="actionGauss">
+  <action name="actionBox">
+   <property name="text">
+    <string>Box</string>
+   </property>
+  </action>
+  <action name="actionEight">
+   <property name="text">
+    <string>Eight</string>
+   </property>
+  </action>
+  <action name="actionTen">
+   <property name="text">
+    <string>Ten</string>
+   </property>
+  </action>
+  <action name="actionGauss_2">
    <property name="text">
     <string>Gauss</string>
+   </property>
+  </action>
+  <action name="actionBox_2">
+   <property name="text">
+    <string>Box</string>
+   </property>
+  </action>
+  <action name="actionEight_2">
+   <property name="text">
+    <string>Eight</string>
+   </property>
+  </action>
+  <action name="actionTen_2">
+   <property name="text">
+    <string>Ten</string>
+   </property>
+  </action>
+  <action name="actionMF9">
+   <property name="text">
+    <string>MF9</string>
+   </property>
+  </action>
+  <action name="actionMF5">
+   <property name="text">
+    <string>MF5</string>
    </property>
   </action>
  </widget>

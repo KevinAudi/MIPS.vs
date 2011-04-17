@@ -10,7 +10,9 @@ public:
 	ImageSmoother();
 	~ImageSmoother();
 
-	static QImage gaussTemplate(QImage image, TemplateMatrix matrix, double modulus);
+	static QImage setTemplate(QImage image, TemplateMatrix matrix, double modulus);	
+    static QImage useMedianFilter(QImage image,int flag);
+	
 
 private:
 	

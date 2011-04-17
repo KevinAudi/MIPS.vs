@@ -24,7 +24,14 @@ private slots:
 	void on_actionAbout_triggered();
 	void on_treeView_clicked(const QModelIndex & index);
 
-	void slotSmoothnessGauss();
+	void slotGaussInSmoother();
+	void slotBoxInSmoother();
+	void slotEightInSmoother();
+	void slotTenInSmoother();
+    void slotMF5InSmoother();
+	void slotMF9InSmoother();
+
+
 
 private:
 	void displayImage(const QString &fileName);

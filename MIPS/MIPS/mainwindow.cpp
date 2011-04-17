@@ -2,16 +2,24 @@
 #include <QHeaderView>
 #include <QScrollBar>
 #include <QImageReader>
-#include "imagesmoother.h"
 
+//#include <iostream>
+#include "imagesmoother.h"
 #include "mainwindow.h"
+
+//using namespace std;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), scaleFactor(1)
 {
     setupUi(this);
 
-    QObject::connect(actionGauss,SIGNAL(triggered()),this,SLOT(slotSmoothnessGauss()));
+    QObject::connect(actionGauss_2,SIGNAL(triggered()),this,SLOT(slotGaussInSmoother()));
+	QObject::connect(actionBox_2,SIGNAL(triggered()),this,SLOT(slotBoxInSmoother()));
+	QObject::connect(actionEight_2,SIGNAL(triggered()),this,SLOT(slotEightInSmoother()));
+	QObject::connect(actionTen_2,SIGNAL(triggered()),this,SLOT(slotTenInSmoother()));
+	QObject::connect(actionMF5,SIGNAL(triggered()),this,SLOT(slotMF5InSmoother()));
+	QObject::connect(actionMF9,SIGNAL(triggered()),this,SLOT(slotMF9InSmoother()));
 
     dirModel = new QDirModel(this);
     dirModel->setFilter(QDir::Dirs | QDir::NoDotAndDotDot);
@@ -148,7 +156,7 @@ void MainWindow::on_treeView_clicked ( const QModelIndex &index )
     updateUi();
 }
 
-void MainWindow::slotSmoothnessGauss()
+void MainWindow::slotGaussInSmoother()
 {
     QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));
 	TemplateMatrix matrix(1);
@@ -176,10 +184,87 @@ void MainWindow::slotSmoothnessGauss()
 		}
 	}
 
-	processingImage = ImageSmoother::gaussTemplate(processingImage, matrix, 1.0 / 16.0);
+	processingImage = ImageSmoother::setTemplate(processingImage, matrix, 1.0 / 16.0);
     DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);
     dialog->exec();
     delete dialog;
+}
+
+void  MainWindow::slotBoxInSmoother()
+{
+	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));
+	TemplateMatrix matrix(1);
+	
+	for (int i = -1; i <= 1; i++)
+	{
+		for (int j = -1; j <= 1; j++)
+		{			
+			matrix.setWeightAt(i + 1, j + 1, 1);
+		}
+	}
+
+	processingImage = ImageSmoother::setTemplate(processingImage, matrix, 1.0 / 9.0);
+	DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);
+	dialog->exec();
+	delete dialog;
+}
+
+void  MainWindow::slotEightInSmoother()
+{
+	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));
+	TemplateMatrix matrix(1);
+
+	for (int i = -1; i <= 1; i++)
+	{
+		for (int j = -1; j <= 1; j++)
+		{			
+			matrix.setWeightAt(i + 1, j + 1, 1);
+		}
+	}
+	matrix.setWeightAt(1,1,0);
+
+	processingImage = ImageSmoother::setTemplate(processingImage, matrix, 1.0/8.0);
+	DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);
+	dialog->exec();
+	delete dialog;
+}
+
+void  MainWindow::slotTenInSmoother()
+{
+	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));
+	TemplateMatrix matrix(1);
+
+	for (int i = -1; i <= 1; i++)
+	{
+		for (int j = -1; j <= 1; j++)
+		{			
+			matrix.setWeightAt(i + 1, j + 1, 1);
+		}
+	}
+    matrix.setWeightAt(1,1,2);
+
+	processingImage = ImageSmoother::setTemplate(processingImage, matrix, 1.0 / 10.0);
+	DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);
+	dialog->exec();
+	delete dialog;
+}
+
+void MainWindow::slotMF5InSmoother()
+{
+	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));
+	processingImage = ImageSmoother::useMedianFilter(processingImage,5);
+	DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);
+	dialog->exec();
+	delete dialog;
+}
+
+void MainWindow::slotMF9InSmoother()
+{
+	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));	
+	processingImage = ImageSmoother::useMedianFilter(processingImage,9);
+	DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);
+	dialog->exec();
+	delete dialog;
 }
 
 const char *htmlAboutText =
