@@ -7,11 +7,7 @@ TemplateMatrix::TemplateMatrix(int radius) : width(1), power(0), radius(radius)
 		width <<= 1;
 		power++;
 	}
-	this->weights = QVector<int>(width  * (2 * radius + 1));
-	for (int i = 0; i < width * (2 * radius + 1); i++)
-	{
-		weights[i] = 0;
-	}
+	this->weights = QVector<int>(width  * (2 * radius + 1), 0);
 }
 
 TemplateMatrix::~TemplateMatrix()
