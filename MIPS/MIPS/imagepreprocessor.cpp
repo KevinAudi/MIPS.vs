@@ -122,30 +122,30 @@ QImage ImagePreprocessor::process8BitImageInMF(QImage image,int flag)
 	int w = image.width();
 	int pixelValue;
 	 
-	if((image.format()==QImage::Format_Indexed8)&&(image.depth()==8))
+	if((image.format() == QImage::Format_Indexed8) && (image.depth() == 8))
 	{
-		for (int i = 1; i < w - 1; i++)
+		for (int x = 1; x < w - 1; x++)
 		{
-			for (int j= 1; j < h - 1; j++)
+			for (int y= 1; y < h - 1; y++)
 			{
-				 buffer[0] = image.pixelIndex(i - 1,j);
-				 buffer[1] = image.pixelIndex(i,j);
-				 buffer[2] = image.pixelIndex(i + 1,j);
-				 buffer[3] = image.pixelIndex(i,j - 1);
-				 buffer[4] = image.pixelIndex(i,j +1);
+				 buffer[0] = image.pixelIndex(x - 1,y);
+				 buffer[1] = image.pixelIndex(x,y);
+				 buffer[2] = image.pixelIndex(x + 1,y);
+				 buffer[3] = image.pixelIndex(x,y - 1);
+				 buffer[4] = image.pixelIndex(x,y +1);
 				 if (flag == 9)
 				 {
-					 buffer[5] = image.pixelIndex(i - 1,j - 1);
-					 buffer[6] = image.pixelIndex(i - 1,j +1);
-					 buffer[7] = image.pixelIndex(i + 1,j - 1);
-					 buffer[8] = image.pixelIndex(i + 1,j +1);
+					 buffer[5] = image.pixelIndex(x - 1,y - 1);
+					 buffer[6] = image.pixelIndex(x - 1,y +1);
+					 buffer[7] = image.pixelIndex(x + 1,y - 1);
+					 buffer[8] = image.pixelIndex(x + 1,y +1);
 				 }
                  pixelValue = getMedian(buffer,flag);
 				 if (pixelValue > 255)
 				    pixelValue = 255;
 				 if(pixelValue < 0)
 					 pixelValue = 0;
-				 eightBitImage.setPixel(i, j, pixelValue);
+				 eightBitImage.setPixel(x, y, pixelValue);
 			}
 		}
 	}
