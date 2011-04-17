@@ -116,8 +116,7 @@ int ImagePreprocessor::getMedian(int buffer[], int termsNumber)
 QImage ImagePreprocessor::process8BitImageInMF(QImage image,int flag)
 {
 	QImage eightBitImage = image;
-	//int number = 9;
-	/*QVector <int> buffer;*/
+	 
 	int buffer[9] = {0};
 	int h = image.height();
 	int w = image.width();
@@ -125,9 +124,9 @@ QImage ImagePreprocessor::process8BitImageInMF(QImage image,int flag)
 	 
 	if((image.format()==QImage::Format_Indexed8)&&(image.depth()==8))
 	{
-		for (int i = 1; i < h - 1; i++)
+		for (int i = 1; i < w - 1; i++)
 		{
-			for (int j= 1; j < w - 1; j++)
+			for (int j= 1; j < h - 1; j++)
 			{
 				 buffer[0] = image.pixelIndex(i - 1,j);
 				 buffer[1] = image.pixelIndex(i,j);
