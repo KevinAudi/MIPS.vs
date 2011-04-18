@@ -1,4 +1,5 @@
 #include "imagepreprocessor.h"
+#include <QDebug>
 #define  PI 3.141592653
 
 ImagePreprocessor::ImagePreprocessor(QWidget *parent) :
@@ -477,7 +478,8 @@ QImage ImagePreprocessor::process8BitImageInILP(QImage image,int filterXRadius,i
 	{
 		for (x = 0; x < w; x++)
 		{
-              tempPixelValue = eightBitImage.pixelIndex(w *(h - 1 -y) + x, y);			 
+             // tempPixelValue = eightBitImage.pixelIndex(w *(h - 1 -y) + x, y);		
+                tempPixelValue = eightBitImage.pixelIndex(x, h - 1 - y);		
 			  pCTData[y * transWidth + x] = complex<double>(tempPixelValue,0);
 		}
 	}
@@ -511,7 +513,8 @@ QImage ImagePreprocessor::process8BitImageInILP(QImage image,int filterXRadius,i
 			tempPixelValue = dReal;
 			/*lpSrc = (unsigned char*)lpDIBBits + nWidth * (nHeight - 1 - y) + x;
 			*lpSrc =unchValue ;*/
-			eightBitImage.setPixel(w * (h - 1 - y) + x, y, tempPixelValue);
+			/*eightBitImage.setPixel(w * (h - 1 - y) + x, y, tempPixelValue);*/
+            eightBitImage.setPixel( x, h - 1- y, tempPixelValue);
 		}
 	}
 	delete pCTData;
