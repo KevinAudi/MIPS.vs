@@ -176,8 +176,7 @@ void ImagePreprocessor::fft2D(complex<double> * pCTData, int nWidth, int nHeight
 	
 	int nXLev;// x，y（行列）方向上的迭代次数
 	int nYLev;
-
-	// 计算x，y（行列）方向上的迭代次数
+	 
 	nXLev = (int) ( log((double)nTransWidth)/log(2.0) +  0.5 );
 	nYLev = (int) ( log((double)nTransHeight)/log(2.0) + 0.5 );
 
@@ -220,26 +219,19 @@ void ImagePreprocessor::fft2D(complex<double> * pCTData, int nWidth, int nHeight
 
 void  ImagePreprocessor::ifft2D(complex<double> * pCFData, complex<double> * pCTData, int nWidth, int nHeight)
 {
-	// 循环控制变量
+	
 	int	x;
-	int	y;
-
-	// 临时变量
+	int	y;	
 	double	dTmpOne;
-	double  dTmpTwo;
-
-	// 进行傅立叶变换的宽度和高度，（2的整数次幂）
-	// 图像的宽度和高度不一定为2的整数次幂
-	int		nTransWidth;
-	int 	nTransHeight;
-
-	// 计算进行傅立叶变换的宽度	（2的整数次幂）
+	double  dTmpTwo;	
+	int   nTransWidth;
+	int   nTransHeight;
+	
 	dTmpOne = log((double)nWidth)/log(2.0);
 	dTmpTwo = ceil(dTmpOne)		   ;
 	dTmpTwo = pow(2,dTmpTwo)	   ;
 	nTransWidth = (int) dTmpTwo	   ;
 
-	// 计算进行傅立叶变换的高度 （2的整数次幂）
 	dTmpOne = log((double)nHeight)/log(2.0);
 	dTmpTwo = ceil(dTmpOne)		   ;
 	dTmpTwo = pow(2,dTmpTwo)	   ;
@@ -247,8 +239,6 @@ void  ImagePreprocessor::ifft2D(complex<double> * pCFData, complex<double> * pCT
 
 	// 分配工作需要的内存空间
 	complex<double> *pCWork= new complex<double>[nTransWidth * nTransHeight];
-
-	//临时变量
 	complex<double> *pCTmp ;
 
 	// 为了利用傅立叶正变换,可以把傅立叶频域的数据取共轭
@@ -478,7 +468,8 @@ QImage ImagePreprocessor::process8BitImageInILP(QImage image,int filterXRadius,i
 		for (x = 0; x < w; x++)
 		{
              // tempPixelValue = eightBitImage.pixelIndex(w *(h - 1 -y) + x, y);		
-                tempPixelValue = eightBitImage.pixelIndex(x, h - 1 - y);		
+             //   tempPixelValue = eightBitImage.pixelIndex(x, h - 1 - y);		
+			tempPixelValue = eightBitImage.pixelIndex(x, y);	
 			  pCTData[y * transWidth + x] = complex<double>(tempPixelValue,0);
 		}
 	}
@@ -513,7 +504,9 @@ QImage ImagePreprocessor::process8BitImageInILP(QImage image,int filterXRadius,i
 			/*lpSrc = (unsigned char*)lpDIBBits + nWidth * (nHeight - 1 - y) + x;
 			*lpSrc =unchValue ;*/
 			/*eightBitImage.setPixel(w * (h - 1 - y) + x, y, tempPixelValue);*/
-            eightBitImage.setPixel( x, h - 1- y, tempPixelValue);
+           // eightBitImage.setPixel( x, h - 1- y, tempPixelValue);
+             if (x > -1 && x < 256 && y > -1 && y < 256)              
+			     eightBitImage.setPixel( x, y, tempPixelValue);
 		}
 	}
 	delete pCTData;
