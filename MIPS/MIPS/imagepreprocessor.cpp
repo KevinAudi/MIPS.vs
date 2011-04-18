@@ -467,9 +467,7 @@ QImage ImagePreprocessor::process8BitImageInILP(QImage image,int filterXRadius,i
 	{
 		for (x = 0; x < w; x++)
 		{
-             // tempPixelValue = eightBitImage.pixelIndex(w *(h - 1 -y) + x, y);		
-             //   tempPixelValue = eightBitImage.pixelIndex(x, h - 1 - y);		
-			tempPixelValue = eightBitImage.pixelIndex(x, y);	
+              tempPixelValue = eightBitImage.pixelIndex(x, h - 1 - y);			
 			  pCTData[y * transWidth + x] = complex<double>(tempPixelValue,0);
 		}
 	}
@@ -498,20 +496,23 @@ QImage ImagePreprocessor::process8BitImageInILP(QImage image,int filterXRadius,i
 	{
 		for (x = 0; x < w; x++)
 		{
-			dReal = pCTData[y*transWidth + x].real();			// Êµ²¿
-			dImaginary = pCTData[y*transWidth + x].imag();		// Ðé²¿
-			tempPixelValue = dReal;
-			/*lpSrc = (unsigned char*)lpDIBBits + nWidth * (nHeight - 1 - y) + x;
-			*lpSrc =unchValue ;*/
-			/*eightBitImage.setPixel(w * (h - 1 - y) + x, y, tempPixelValue);*/
-           // eightBitImage.setPixel( x, h - 1- y, tempPixelValue);
-             if (x > -1 && x < 256 && y > -1 && y < 256)              
-			     eightBitImage.setPixel( x, y, tempPixelValue);
+			dReal = pCTData[y*transWidth + x].real();			
+			dImaginary = pCTData[y*transWidth + x].imag();		
+			tempPixelValue = dReal;			
+			uint v;
+			if(tempPixelValue < 0)
+				v = 0;
+			else if(tempPixelValue > 255)
+				v = 255;
+			else
+				v = ((uint)tempPixelValue) & 255;
+				eightBitImage.setPixel( x, h - 1- y, v);			
 		}
 	}
 	delete pCTData;
 	delete pCFData;
 	pCFData = NULL;
 	pCTData = NULL;
+//	eightBitImage.save("d:/b.bmp");
 	return eightBitImage;
 }
