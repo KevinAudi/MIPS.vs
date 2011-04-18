@@ -177,8 +177,7 @@ void ImagePreprocessor::fft2D(complex<double> * pCTData, int nWidth, int nHeight
 	
 	int nXLev;// x，y（行列）方向上的迭代次数
 	int nYLev;
-
-	// 计算x，y（行列）方向上的迭代次数
+	 
 	nXLev = (int) ( log((double)nTransWidth)/log(2.0) +  0.5 );
 	nYLev = (int) ( log((double)nTransHeight)/log(2.0) + 0.5 );
 
@@ -221,26 +220,19 @@ void ImagePreprocessor::fft2D(complex<double> * pCTData, int nWidth, int nHeight
 
 void  ImagePreprocessor::ifft2D(complex<double> * pCFData, complex<double> * pCTData, int nWidth, int nHeight)
 {
-	// 循环控制变量
+	
 	int	x;
-	int	y;
-
-	// 临时变量
+	int	y;	
 	double	dTmpOne;
-	double  dTmpTwo;
-
-	// 进行傅立叶变换的宽度和高度，（2的整数次幂）
-	// 图像的宽度和高度不一定为2的整数次幂
-	int		nTransWidth;
-	int 	nTransHeight;
-
-	// 计算进行傅立叶变换的宽度	（2的整数次幂）
+	double  dTmpTwo;	
+	int   nTransWidth;
+	int   nTransHeight;
+	
 	dTmpOne = log((double)nWidth)/log(2.0);
 	dTmpTwo = ceil(dTmpOne)		   ;
 	dTmpTwo = pow(2,dTmpTwo)	   ;
 	nTransWidth = (int) dTmpTwo	   ;
 
-	// 计算进行傅立叶变换的高度 （2的整数次幂）
 	dTmpOne = log((double)nHeight)/log(2.0);
 	dTmpTwo = ceil(dTmpOne)		   ;
 	dTmpTwo = pow(2,dTmpTwo)	   ;
@@ -248,8 +240,6 @@ void  ImagePreprocessor::ifft2D(complex<double> * pCFData, complex<double> * pCT
 
 	// 分配工作需要的内存空间
 	complex<double> *pCWork= new complex<double>[nTransWidth * nTransHeight];
-
-	//临时变量
 	complex<double> *pCTmp ;
 
 	// 为了利用傅立叶正变换,可以把傅立叶频域的数据取共轭
@@ -293,7 +283,7 @@ void ImagePreprocessor::fft1D(complex<double> * pCTData, complex<double> * pCFDa
 	int	nCount =0 ;
 
 	// 计算傅立叶变换点数
-	nCount =(int)pow(2.0,nLevel) ;
+	nCount = 1 << nLevel ;
 
 	// 某一级的长度
 	int		nBtFlyLen;
@@ -336,10 +326,10 @@ void ImagePreprocessor::fft1D(complex<double> * pCTData, complex<double> * pCFDa
 	// 蝶形算法进行快速傅立叶变换
 	for(k = 0; k < nLevel; k++)
 	{
-		for(j = 0; j < (int)pow(2.0,k); j++)
+		for(j = 0; j < (1 << k); j++)
 		{
 			//计算长度
-			nBtFlyLen = (int)pow(2.0,(nLevel-k) );
+			nBtFlyLen =  (1 << (nLevel-k));
 
 			//倒序重排，加权计算
 			for(i = 0; i < nBtFlyLen/2; i++)
@@ -349,7 +339,7 @@ void ImagePreprocessor::fft1D(complex<double> * pCTData, complex<double> * pCFDa
 					pCWork1[i + nInter] + pCWork1[i + nInter + nBtFlyLen / 2];
 				pCWork2[i + nInter + nBtFlyLen / 2] =
 					(pCWork1[i + nInter] - pCWork1[i + nInter + nBtFlyLen / 2]) 
-					* pCW[(int)(i * pow(2.0,k))];
+					* pCW[i * (1 << k)];
 			}
 		}
 
@@ -365,9 +355,9 @@ void ImagePreprocessor::fft1D(complex<double> * pCTData, complex<double> * pCFDa
 		nInter = 0;
 		for(i = 0; i < nLevel; i++)
 		{
-			if ( j&(1<<i) )
+			if ( j & (1<<i) )
 			{
-				nInter += 1<<(nLevel-i-1);
+				nInter += (1<<(nLevel-i-1));
 			}
 		}
 		pCFData[j]=pCWork1[nInter];
@@ -390,7 +380,7 @@ void ImagePreprocessor::ifft1D(complex<double> * pCFData, complex<double> * pCTD
 	int nCount;
 
 	// 计算傅立叶变换点数
-	nCount = (int)pow(2.0,nLevel) ;
+	nCount = (1 << nLevel) ;
 
 	// 变换需要的工作空间
 	complex<double> *pCWork;	
@@ -479,8 +469,9 @@ QImage ImagePreprocessor::process8BitImageInILP(QImage image,int filterXRadius,i
 		for (x = 0; x < w; x++)
 		{
              // tempPixelValue = eightBitImage.pixelIndex(w *(h - 1 -y) + x, y);		
-                tempPixelValue = eightBitImage.pixelIndex(x, h - 1 - y);		
-			  pCTData[y * transWidth + x] = complex<double>(tempPixelValue,0);
+             //   tempPixelValue = eightBitImage.pixelIndex(x, h - 1 - y);		
+			tempPixelValue = eightBitImage.pixelIndex(x, y);	
+			pCTData[y * transWidth + x] = complex<double>(tempPixelValue,0);
 		}
 	}
     
@@ -514,7 +505,8 @@ QImage ImagePreprocessor::process8BitImageInILP(QImage image,int filterXRadius,i
 			/*lpSrc = (unsigned char*)lpDIBBits + nWidth * (nHeight - 1 - y) + x;
 			*lpSrc =unchValue ;*/
 			/*eightBitImage.setPixel(w * (h - 1 - y) + x, y, tempPixelValue);*/
-            eightBitImage.setPixel( x, h - 1- y, tempPixelValue);
+           // eightBitImage.setPixel( x, h - 1- y, tempPixelValue);         
+			eightBitImage.setPixel( x, y, tempPixelValue);
 		}
 	}
 	delete pCTData;
