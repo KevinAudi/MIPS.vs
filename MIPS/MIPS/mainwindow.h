@@ -30,6 +30,7 @@ private slots:
 	void slotTenInSmoother();
     void slotMF5InSmoother();
 	void slotMF9InSmoother();
+	void slotILPFInSmoother();
 
 
 

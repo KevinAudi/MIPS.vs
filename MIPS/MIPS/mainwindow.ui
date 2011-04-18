@@ -115,6 +115,7 @@
     </widget>
     <addaction name="menuNeighbhAveraging"/>
     <addaction name="menuMedian_Filter"/>
+    <addaction name="actionIdeal_Low_Pass_Filter"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -314,6 +315,11 @@
   <action name="actionMF5">
    <property name="text">
     <string>MF5</string>
+   </property>
+  </action>
+  <action name="actionIdeal_Low_Pass_Filter">
+   <property name="text">
+    <string>Ideal Low Pass Filter</string>
    </property>
   </action>
  </widget>
