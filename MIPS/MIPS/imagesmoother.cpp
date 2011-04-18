@@ -53,3 +53,23 @@ QImage ImageSmoother::useMedianFilter(QImage image,int flag)
 	return processedImage;
 }
 
+QImage ImageSmoother::useIdealLowPassFilter(QImage image, int xRadius, int yRadius)
+{
+	QImage processedImage;
+	if (image.format() == QImage::Format_Indexed8 && image.depth() == 8)
+	{
+		processedImage = process8BitImageInILP(image,xRadius,yRadius);
+	}
+	else if (image.depth() == 32)
+	{
+		QImage red = process8BitImageInILP(singleColorChannel(image, RED), xRadius,yRadius);
+		QImage green = process8BitImageInILP(singleColorChannel(image, GREEN),xRadius,yRadius);
+		QImage blue = process8BitImageInILP(singleColorChannel(image, BLUE), xRadius,yRadius);
+		processedImage = mergeColorChannel(red, green, blue);
+	}
+	else
+	{
+		processedImage = image;
+	}
+	return processedImage;
+}
