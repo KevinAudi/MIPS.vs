@@ -34,7 +34,7 @@ public:
 
 	//static const double PI = acos(-1.0);
 private:
-	//static int ceilLog2(int value); 
+	static int ceilLog2(int value); 
 };
 
 #endif // IMAGEPREPROCESSOR_H
