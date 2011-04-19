@@ -26,6 +26,9 @@ public:
 	static void ifft2D(complex<double> * pCFData, complex<double> * pCTData, int nWidth, int nHeight);
     static void fft1D(complex<double> * pCTData, complex<double> * pCFData, int nLevel);
     static void ifft1D(complex<double> * pCFData, complex<double> * pCTData, int nLevel);
+	//static const double PI = acos(-1.0);
+private:
+	static int ceilLog2(int value);
 };
 
 #endif // IMAGEPREPROCESSOR_H
