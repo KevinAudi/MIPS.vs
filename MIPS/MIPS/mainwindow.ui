@@ -116,6 +116,7 @@
     <addaction name="menuNeighbhAveraging"/>
     <addaction name="menuMedian_Filter"/>
     <addaction name="actionIdeal_Low_Pass_Filter"/>
+    <addaction name="actionButter_Worth_LP_Filter"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -320,6 +321,11 @@
   <action name="actionIdeal_Low_Pass_Filter">
    <property name="text">
     <string>Ideal Low Pass Filter</string>
+   </property>
+  </action>
+  <action name="actionButter_Worth_LP_Filter">
+   <property name="text">
+    <string>Butter Worth LP Filter</string>
    </property>
   </action>
  </widget>

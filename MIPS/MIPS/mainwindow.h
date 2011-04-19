@@ -28,11 +28,12 @@ private slots:
 	void slotBoxInSmoother();
 	void slotEightInSmoother();
 	void slotTenInSmoother();
+
     void slotMF5InSmoother();
 	void slotMF9InSmoother();
+
 	void slotILPFInSmoother();
-
-
+	void slotBWLPFInSmoother();
 
 private:
 	void displayImage(const QString &fileName);

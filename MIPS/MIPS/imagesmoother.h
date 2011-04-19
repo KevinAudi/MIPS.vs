@@ -13,6 +13,7 @@ public:
 	static QImage setTemplate(QImage image, TemplateMatrix matrix, double modulus);	
     static QImage useMedianFilter(QImage image,int flag);
 	static QImage useIdealLowPassFilter(QImage image, int xRadius, int yRadius);
+	static QImage useButterWorthLowPassFilter(QImage image, int radius);
 	
 
 private:

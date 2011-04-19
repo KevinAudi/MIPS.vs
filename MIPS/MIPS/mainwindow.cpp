@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
 	QObject::connect(actionMF5,SIGNAL(triggered()),this,SLOT(slotMF5InSmoother()));
 	QObject::connect(actionMF9,SIGNAL(triggered()),this,SLOT(slotMF9InSmoother()));
 	QObject::connect(actionIdeal_Low_Pass_Filter,SIGNAL(triggered()),this,SLOT(slotILPFInSmoother()));
+    QObject::connect(actionButter_Worth_LP_Filter,SIGNAL(triggered()),this,SLOT(slotBWLPFInSmoother()));	
 
     dirModel = new QDirModel(this);
     dirModel->setFilter(QDir::Dirs | QDir::NoDotAndDotDot);
@@ -279,6 +280,15 @@ void MainWindow::slotILPFInSmoother()
 	delete dialog;
 }
 
+void MainWindow::slotBWLPFInSmoother()
+{
+	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));	
+	int radius = 25;	
+	processingImage = ImageSmoother::useButterWorthLowPassFilter(processingImage,radius);
+	DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);
+	dialog->exec();
+	delete dialog;
+}
 
 const char *htmlAboutText =
         "<HTML>"

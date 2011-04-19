@@ -22,10 +22,13 @@ public:
 	static QImage process8BitImageInMF(QImage image,int flag);//flag indicates MF5 or MF9
 
 	static QImage process8BitImageInILP(QImage image,int filterXRadius,int filterYRadius);
+	static QImage process8BitImageInBWLP(QImage image, int radius);
+
 	static void fft2D(complex<double> * pCTData, int nWidth, int nHeight, complex<double> * pCFData);
 	static void ifft2D(complex<double> * pCFData, complex<double> * pCTData, int nWidth, int nHeight);
     static void fft1D(complex<double> * pCTData, complex<double> * pCFData, int nLevel);
     static void ifft1D(complex<double> * pCFData, complex<double> * pCTData, int nLevel);
+
 };
 
 #endif // IMAGEPREPROCESSOR_H

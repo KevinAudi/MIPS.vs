@@ -73,3 +73,24 @@ QImage ImageSmoother::useIdealLowPassFilter(QImage image, int xRadius, int yRadi
 	}
 	return processedImage;
 }
+
+QImage ImageSmoother::useButterWorthLowPassFilter(QImage image, int radius)
+{
+	QImage processedImage;
+	if (image.format() == QImage::Format_Indexed8 && image.depth() == 8)
+	{
+		processedImage = process8BitImageInBWLP(image,radius);
+	}
+	else if (image.depth() == 32)
+	{
+		QImage red = process8BitImageInBWLP(singleColorChannel(image, RED), radius);
+		QImage green = process8BitImageInBWLP(singleColorChannel(image, GREEN),radius);
+		QImage blue = process8BitImageInBWLP(singleColorChannel(image, BLUE), radius);
+		processedImage = mergeColorChannel(red, green, blue);
+	}
+	else
+	{
+		processedImage = image;
+	}
+	return processedImage;
+}
