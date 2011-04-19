@@ -3,10 +3,11 @@
 #include <QScrollBar>
 #include <QImageReader>
 
-//#include <iostream>
-#include "imagesmoother.h"
 #include "mainwindow.h"
+#include "imagesmoother.h"
+#include "imagesharpener.h"
 
+//#include <iostream>
 //using namespace std;
 
 MainWindow::MainWindow(QWidget *parent)
@@ -22,6 +23,11 @@ MainWindow::MainWindow(QWidget *parent)
 	QObject::connect(actionMF9,SIGNAL(triggered()),this,SLOT(slotMF9InSmoother()));
 	QObject::connect(actionIdeal_Low_Pass_Filter,SIGNAL(triggered()),this,SLOT(slotILPFInSmoother()));
     QObject::connect(actionButter_Worth_LP_Filter,SIGNAL(triggered()),this,SLOT(slotBWLPFInSmoother()));	
+
+	QObject::connect(actionIdeal_High_Pass_Filter,SIGNAL(triggered()),this,SLOT(slotIHPFInSharpener()));
+	QObject::connect(actionButter_Worth_HP_Filter,SIGNAL(triggered()),this,SLOT(slotBWHPFInSharpener()));	
+
+    QObject::connect(actionLaplacian,SIGNAL(triggered()),this,SLOT(slotLaplacianInSharpener()));
 
     dirModel = new QDirModel(this);
     dirModel->setFilter(QDir::Dirs | QDir::NoDotAndDotDot);
@@ -285,6 +291,62 @@ void MainWindow::slotBWLPFInSmoother()
 	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));	
 	int radius = 25;	
 	processingImage = ImageSmoother::useButterWorthLowPassFilter(processingImage,radius);
+	DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);
+	dialog->exec();
+	delete dialog;
+}
+
+void MainWindow::slotIHPFInSharpener()
+{
+	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));	
+	int xRadius = 5;
+	int yRadius = 5;
+	processingImage = ImageSharpener::useIdealHighPassFilter(processingImage,xRadius,yRadius);
+	DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);
+	dialog->exec();
+	delete dialog;
+}
+
+void MainWindow::slotBWHPFInSharpener()
+{
+	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));	
+	int radius = 5;	
+	processingImage = ImageSharpener::useButterWorthHighPassFilter(processingImage,radius);
+	DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);
+	dialog->exec();
+	delete dialog;
+}
+
+void MainWindow::slotLaplacianInSharpener()
+{
+	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));
+	TemplateMatrix matrix(1);
+
+	for (int i = -1; i <= 1; i++)
+	{
+		for (int j = -1; j <= 1; j++)
+		{
+			int w = 0;
+			int res = i * i + j * j;
+			switch(res)
+			{
+			case 0:
+				w = 5;
+				break;
+			case 1:
+				w = -1;
+				break;
+			case 2:
+				w = 0;
+				break;
+			default:
+				w = 0;
+			}
+			matrix.setWeightAt(i + 1, j + 1, w);
+		}
+	}
+
+	processingImage = ImageSmoother::setTemplate(processingImage, matrix, 1.0);
 	DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);
 	dialog->exec();
 	delete dialog;

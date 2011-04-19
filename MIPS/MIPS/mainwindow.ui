@@ -92,6 +92,9 @@
     <property name="title">
      <string>&amp;Sharpening</string>
     </property>
+    <addaction name="actionIdeal_High_Pass_Filter"/>
+    <addaction name="actionButter_Worth_HP_Filter"/>
+    <addaction name="actionLaplacian"/>
    </widget>
    <widget class="QMenu" name="menu_Smoothness">
     <property name="title">
@@ -326,6 +329,21 @@
   <action name="actionButter_Worth_LP_Filter">
    <property name="text">
     <string>Butter Worth LP Filter</string>
+   </property>
+  </action>
+  <action name="actionIdeal_High_Pass_Filter">
+   <property name="text">
+    <string>Ideal High Pass Filter</string>
+   </property>
+  </action>
+  <action name="actionButter_Worth_HP_Filter">
+   <property name="text">
+    <string>Butter Worth HP Filter</string>
+   </property>
+  </action>
+  <action name="actionLaplacian">
+   <property name="text">
+    <string>Laplacian</string>
    </property>
   </action>
  </widget>

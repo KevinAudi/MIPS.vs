@@ -29,6 +29,9 @@ public:
     static void fft1D(complex<double> * pCTData, complex<double> * pCFData, int nLevel);
     static void ifft1D(complex<double> * pCFData, complex<double> * pCTData, int nLevel);
 
+	static QImage process8BitImageInIHP(QImage image,int filterXRadius,int filterYRadius);
+	static QImage process8BitImageInBWHP(QImage image, int radius);
+
 	//static const double PI = acos(-1.0);
 private:
 	//static int ceilLog2(int value); 

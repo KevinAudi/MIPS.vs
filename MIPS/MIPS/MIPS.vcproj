@@ -171,6 +171,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\imagesharpener.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\imagesmoother.cpp"
 				>
 			</File>
@@ -247,6 +251,10 @@
 						Outputs=""
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\imagesharpener.h"
+				>
 			</File>
 			<File
 				RelativePath=".\imagesmoother.h"

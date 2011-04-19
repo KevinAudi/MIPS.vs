@@ -520,14 +520,13 @@ QImage ImagePreprocessor::process8BitImageInILP(QImage image,int filterXRadius,i
 QImage ImagePreprocessor::process8BitImageInBWLP(QImage image, int radius)
 {
 	QImage eightBitImage = image;
-	int x,y;
-	 	
+
+	int x;
+	int y;	 	
 	int h = image.height();
 	int w = image.width();
-	//double dReal ;									
-	//double dImaginary;								
+								
 	double tempPixelValue;		
-
 	double dTmpOne = log((double)w) / log(2.0);
 	double dTmpTwo = ceil(dTmpOne)	;
 	dTmpTwo = pow(2,dTmpTwo);
@@ -553,25 +552,122 @@ QImage ImagePreprocessor::process8BitImageInBWLP(QImage image, int radius)
 	{
 		for(x=0; x<w; x++)	
 		{			 
-			double tempPixelValue = eightBitImage.pixelIndex(x, h - 1 - y);			
+		    tempPixelValue = eightBitImage.pixelIndex(x, h - 1 - y);			
 			pCTData[y * nTransWidth + x] = complex<double>(tempPixelValue,0);
 		}
 	}	
 
 	fft2D(pCTData, w, h, pCFData) ;			// 傅立叶正变换
 
-	for(y=0; y<nTransHeight; y++)						// 开始实施ButterWorth低通滤波
+	for(y = 0; y < nTransHeight; y++)						// 开始实施ButterWorth低通滤波
 	{
-		for(x=0; x<nTransWidth; x++)
+		for(x = 0; x < nTransWidth; x++)
 		{
 			double BWModulus = (double)(y*y+x*x) ; 
 			BWModulus = BWModulus / (radius * radius); 
-			BWModulus = 1/(1+BWModulus)  ;							 
+			BWModulus = 1.0 / (1.0+BWModulus)  ;							 
 			pCFData[y*nTransWidth + x]=complex<double>(pCFData[y*nTransWidth + x].real()*BWModulus, 
 				pCFData[y*nTransWidth + x].imag()*BWModulus);
 		}
 	}
 	// 经过ButterWorth低通滤波的图象进行反变换
+	ifft2D(pCFData, pCTData, w, h);
+
+	for(y = 0; y < h; y++)							// 反变换的数据传给lpDIBBits
+	{
+		for(x = 0; x < w; x++)
+		{
+			double dReal = pCTData[y*nTransWidth + x].real() ;
+			double dImaginary = pCTData[y*nTransWidth + x].imag() ;
+			tempPixelValue = max(0.0,min(255.0,sqrt(dReal*dReal+dImaginary*dImaginary) ));
+			 		
+			uint v;
+			if(tempPixelValue < 0)
+				v = 0;
+			else if(tempPixelValue > 255)
+				v = 255;
+			else
+				v = ((uint)tempPixelValue) & 255;
+			eightBitImage.setPixel( x, h - 1- y, v);	
+		}
+	}
+	delete pCTData;									 
+	delete pCFData;								 
+	pCTData = NULL;
+	pCFData = NULL;
+	return eightBitImage;	
+}
+
+QImage ImagePreprocessor::process8BitImageInIHP(QImage image,int filterXRadius,int filterYRadius)
+{
+	QImage eightBitImage = image;
+
+	int x;
+	int y;	 	
+	int h = image.height();
+	int w = image.width();
+
+	double tempPixelValue;		
+	double dTmpOne = log((double)w) / log(2.0);
+	double dTmpTwo = ceil(dTmpOne)	;
+	dTmpTwo = pow(2,dTmpTwo);
+	int nTransWidth = (int) dTmpTwo;	
+
+	dTmpOne = log((double)h) / log(2.0);
+	dTmpTwo = ceil(dTmpOne)	;
+	dTmpTwo = pow(2,dTmpTwo);
+	int nTransHeight = (int) dTmpTwo;	
+
+	complex<double> * pCTData = pCTData=new complex<double>[nTransWidth * nTransHeight]; 
+	complex<double> * pCFData = pCFData=new complex<double>[nTransWidth * nTransHeight]; 
+
+	for(y = 0; y < nTransHeight; y++)
+	{
+		for( x = 0; x < nTransWidth; x++)
+		{
+			pCTData[y*nTransWidth + x] = complex<double>(0,0);	// 补零
+		}
+	}
+
+	for(y = 0; y < h; y++)							// 把图像数据传给pCTData
+	{
+		for(x = 0; x < w; x++)	
+		{			 
+			tempPixelValue = eightBitImage.pixelIndex(x, h - 1 - y);			
+			pCTData[y * nTransWidth + x] = complex<double>(tempPixelValue,0);
+		}
+	}	
+
+	fft2D(pCTData, w, h, pCFData) ;			// 傅立叶正变换
+
+	for(x = 0; x < nTransWidth; x++)						// 开始实施理想的高通滤波
+	{
+		for(y = 0; y < filterYRadius; y++)
+		{
+			 pCFData[x * nTransHeight + y] = complex<double>(0,0);
+		}
+		for (y = nTransHeight  - filterYRadius;y < nTransHeight;y++)
+		{
+             pCFData[x * nTransHeight + y] = complex<double>(0,0);
+		}
+	}
+
+	for (x = 0; x < filterXRadius; x++)
+	{
+		for (y = 0; y < nTransHeight; y++)
+		{
+			pCFData[x * nTransHeight + y] = complex<double>(0,0);
+		}
+	}
+
+	for (x = nTransWidth - filterXRadius; x < nTransWidth; x++)
+	{
+		for (y = 0; y < nTransHeight; y++)
+		{
+			pCFData[x * nTransHeight + y] = complex<double>(0,0);
+		}
+	}
+	
 	ifft2D(pCFData, pCTData, w, h);
 
 	for(y=0; y<h; y++)							// 反变换的数据传给lpDIBBits
@@ -580,8 +676,88 @@ QImage ImagePreprocessor::process8BitImageInBWLP(QImage image, int radius)
 		{
 			double dReal = pCTData[y*nTransWidth + x].real() ;
 			double dImaginary = pCTData[y*nTransWidth + x].imag() ;
-			tempPixelValue = max(0.0,min(255.0,sqrt(dReal*dReal+dImaginary*dImaginary) ));
-			 		
+			tempPixelValue = dReal;
+
+			uint v;
+			if(tempPixelValue < 0)
+				v = 0;
+			else if(tempPixelValue > 255)
+				v = 255;
+			else
+				v = ((uint)tempPixelValue) & 255;
+			eightBitImage.setPixel( x, h - 1- y, v);	
+		}
+	}
+	delete pCTData;									 
+	delete pCFData;								 
+	pCTData = NULL;
+	pCFData = NULL;
+	return eightBitImage;	
+}
+
+QImage ImagePreprocessor::process8BitImageInBWHP(QImage image, int radius)
+{
+	QImage eightBitImage = image;
+	int x;
+	int y;	 	
+	int h = image.height();
+	int w = image.width();
+
+	double tempPixelValue;		
+	double dTmpOne = log((double)w) / log(2.0);
+	double dTmpTwo = ceil(dTmpOne)	;
+	dTmpTwo = pow(2,dTmpTwo);
+	int nTransWidth = (int) dTmpTwo;	
+
+	dTmpOne = log((double)h) / log(2.0);
+	dTmpTwo = ceil(dTmpOne)	;
+	dTmpTwo = pow(2,dTmpTwo);
+	int nTransHeight = (int) dTmpTwo;	
+
+	complex<double> * pCTData = pCTData=new complex<double>[nTransWidth * nTransHeight]; 
+	complex<double> * pCFData = pCFData=new complex<double>[nTransWidth * nTransHeight]; 
+
+	for(y=0; y<nTransHeight; y++)
+	{
+		for( x=0; x<nTransWidth; x++)
+		{
+			pCTData[y*nTransWidth + x]=complex<double>(0,0);	// 补零
+		}
+	}
+
+	for(y=0; y<h; y++)							// 把图像数据传给pCTData
+	{
+		for(x=0; x<w; x++)	
+		{			 
+			tempPixelValue = eightBitImage.pixelIndex(x, h - 1 - y);			
+			pCTData[y * nTransWidth + x] = complex<double>(tempPixelValue,0);
+		}
+	}	
+
+	fft2D(pCTData, w, h, pCFData) ;			// 傅立叶正变换
+
+	for(y = 0; y < nTransHeight; y++)						// 开始实施ButterWorth高通滤波
+	{
+		for(x = 0; x < nTransWidth; x++)
+		{
+			double BWModulus = (double)(y*y+x*x) ; 
+			BWModulus = (radius * radius) / BWModulus; 
+			BWModulus = 1.0 / (1.0+BWModulus)  ;							 
+			pCFData[y*nTransWidth + x]=complex<double>(BWModulus*(pCFData[y*nTransWidth + x].real()), 
+				BWModulus*(pCFData[y*nTransWidth + x].imag()));
+		}
+	}
+	// 经过ButterWorth低通滤波的图象进行反变换
+	ifft2D(pCFData, pCTData, w, h);
+
+	for(y = 0; y < h; y++)							// 反变换的数据传给lpDIBBits
+	{
+		for(x = 0; x < w; x++)
+		{
+			double dReal = pCTData[y*nTransWidth + x].real() ;
+			double dImaginary = pCTData[y*nTransWidth + x].imag() ;
+			tempPixelValue = max(0.0,min(255.0,sqrt(dReal*dReal+dImaginary*dImaginary)  + 100));
+
 			uint v;
 			if(tempPixelValue < 0)
 				v = 0;

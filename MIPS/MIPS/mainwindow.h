@@ -35,6 +35,11 @@ private slots:
 	void slotILPFInSmoother();
 	void slotBWLPFInSmoother();
 
+	void slotIHPFInSharpener();
+	void slotBWHPFInSharpener();
+
+	void slotLaplacianInSharpener();
+
 private:
 	void displayImage(const QString &fileName);
 	void scaleImage(double factor);
