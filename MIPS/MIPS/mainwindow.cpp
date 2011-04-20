@@ -193,6 +193,7 @@ void MainWindow::slotGaussInSmoother()
 	}
 
 	processingImage = ImageSmoother::setTemplate(processingImage, matrix, 1.0 / 16.0);
+	processingImage.save("D:/gauss.bmp");
     DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);
     dialog->exec();
     delete dialog;
@@ -212,6 +213,7 @@ void  MainWindow::slotBoxInSmoother()
 	}
 
 	processingImage = ImageSmoother::setTemplate(processingImage, matrix, 1.0 / 9.0);
+	processingImage.save("D:/box.bmp");
 	DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);
 	dialog->exec();
 	delete dialog;
@@ -232,6 +234,7 @@ void  MainWindow::slotEightInSmoother()
 	matrix.setWeightAt(1,1,0);
 
 	processingImage = ImageSmoother::setTemplate(processingImage, matrix, 1.0/8.0);
+	processingImage.save("D:/eight.bmp");
 	DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);
 	dialog->exec();
 	delete dialog;
@@ -252,6 +255,7 @@ void  MainWindow::slotTenInSmoother()
     matrix.setWeightAt(1,1,2);
 
 	processingImage = ImageSmoother::setTemplate(processingImage, matrix, 1.0 / 10.0);
+	processingImage.save("D:/ten.bmp");
 	DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);
 	dialog->exec();
 	delete dialog;
@@ -261,6 +265,7 @@ void MainWindow::slotMF5InSmoother()
 {
 	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));
 	processingImage = ImageSmoother::useMedianFilter(processingImage,5);
+	processingImage.save("D:/MF5.bmp");
 	DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);
 	dialog->exec();
 	delete dialog;
@@ -270,6 +275,7 @@ void MainWindow::slotMF9InSmoother()
 {
 	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));	
 	processingImage = ImageSmoother::useMedianFilter(processingImage,9);
+	processingImage.save("D:/MF9.bmp");
 	DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);
 	dialog->exec();
 	delete dialog;
