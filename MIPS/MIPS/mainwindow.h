@@ -6,6 +6,7 @@
 #include "ui_MainWindow.h"
 #include "imagepreprocessor.h"
 #include "displayimagedialog.h"
+#include <math.h>
 
 class MainWindow : public QMainWindow, private Ui::MainWindow
 {
@@ -38,7 +39,12 @@ private slots:
 	void slotIHPFInSharpener();
 	void slotBWHPFInSharpener();
 
-	void slotLaplacianInSharpener();
+	void slotLaplacian4InSharpener();
+	void slotLaplacian8InSharpener();
+
+	void slotSobelInSharpener();
+	void slotPrewittInSharpener();
+	void slotIsotropicInSharpener();
 
 private:
 	void displayImage(const QString &fileName);

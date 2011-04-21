@@ -12,14 +12,14 @@ public:
 	{
 		return weights[(x << power) | y];
 	}	
-	void setWeightAt(int x, int  y, int value);
+	void setWeightAt(int x, int  y, double value);
 	int getRadius();	
 
 private:
 	int radius;
 	int width;
 	int power;
-	QVector<int> weights;	
+	QVector<double> weights;	
 };
 
 #endif // TEMPLATEMATRIX_H

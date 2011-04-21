@@ -51,3 +51,24 @@ QImage ImageSharpener::useButterWorthHighPassFilter(QImage image, int radius)
 	}
 	return processedImage;
 }
+
+QImage ImageSharpener::setTemplateInSharpener(QImage image, TemplateMatrix matrixX,TemplateMatrix matrixY)
+{
+	QImage processedImage;
+	if (image.format() == QImage::Format_Indexed8 && image.depth() == 8)
+	{
+		processedImage = process8BitImageInSharpener(image, matrixX, matrixY);
+	}
+	else if (image.depth() == 32)
+	{
+		QImage red = process8BitImageInSharpener(singleColorChannel(image, RED), matrixX, matrixY);
+		QImage green = process8BitImageInSharpener(singleColorChannel(image, GREEN), matrixX, matrixY);
+		QImage blue = process8BitImageInSharpener(singleColorChannel(image, BLUE), matrixX, matrixY);
+		processedImage = mergeColorChannel(red, green, blue);
+	}
+	else
+	{
+		processedImage = image;
+	}
+	return processedImage;
+}

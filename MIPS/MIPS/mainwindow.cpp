@@ -27,7 +27,12 @@ MainWindow::MainWindow(QWidget *parent)
 	QObject::connect(actionIdeal_High_Pass_Filter,SIGNAL(triggered()),this,SLOT(slotIHPFInSharpener()));
 	QObject::connect(actionButter_Worth_HP_Filter,SIGNAL(triggered()),this,SLOT(slotBWHPFInSharpener()));	
 
-    QObject::connect(actionLaplacian,SIGNAL(triggered()),this,SLOT(slotLaplacianInSharpener()));
+    QObject::connect(actionL4,SIGNAL(triggered()),this,SLOT(slotLaplacian4InSharpener()));
+	QObject::connect(actionL8,SIGNAL(triggered()),this,SLOT(slotLaplacian8InSharpener()));
+
+	QObject::connect(actionSobel,SIGNAL(triggered()),this,SLOT(slotSobelInSharpener()));
+	QObject::connect(actionIsotropic,SIGNAL(triggered()),this,SLOT(slotIsotropicInSharpener()));
+	QObject::connect(actionPrewitt,SIGNAL(triggered()),this,SLOT(slotPrewittInSharpener()));
 
     dirModel = new QDirModel(this);
     dirModel->setFilter(QDir::Dirs | QDir::NoDotAndDotDot);
@@ -193,7 +198,7 @@ void MainWindow::slotGaussInSmoother()
 	}
 
 	processingImage = ImageSmoother::setTemplate(processingImage, matrix, 1.0 / 16.0);
-	processingImage.save("D:/gauss.bmp");
+//	processingImage.save("D:/gauss.bmp");
     DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);
     dialog->exec();
     delete dialog;
@@ -213,7 +218,7 @@ void  MainWindow::slotBoxInSmoother()
 	}
 
 	processingImage = ImageSmoother::setTemplate(processingImage, matrix, 1.0 / 9.0);
-	processingImage.save("D:/box.bmp");
+//	processingImage.save("D:/box.bmp");
 	DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);
 	dialog->exec();
 	delete dialog;
@@ -234,7 +239,7 @@ void  MainWindow::slotEightInSmoother()
 	matrix.setWeightAt(1,1,0);
 
 	processingImage = ImageSmoother::setTemplate(processingImage, matrix, 1.0/8.0);
-	processingImage.save("D:/eight.bmp");
+//	processingImage.save("D:/eight.bmp");
 	DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);
 	dialog->exec();
 	delete dialog;
@@ -255,7 +260,7 @@ void  MainWindow::slotTenInSmoother()
     matrix.setWeightAt(1,1,2);
 
 	processingImage = ImageSmoother::setTemplate(processingImage, matrix, 1.0 / 10.0);
-	processingImage.save("D:/ten.bmp");
+	//processingImage.save("D:/ten.bmp");
 	DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);
 	dialog->exec();
 	delete dialog;
@@ -265,7 +270,7 @@ void MainWindow::slotMF5InSmoother()
 {
 	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));
 	processingImage = ImageSmoother::useMedianFilter(processingImage,5);
-	processingImage.save("D:/MF5.bmp");
+	//processingImage.save("D:/MF5.bmp");
 	DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);
 	dialog->exec();
 	delete dialog;
@@ -275,7 +280,7 @@ void MainWindow::slotMF9InSmoother()
 {
 	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));	
 	processingImage = ImageSmoother::useMedianFilter(processingImage,9);
-	processingImage.save("D:/MF9.bmp");
+	//processingImage.save("D:/MF9.bmp");
 	DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);
 	dialog->exec();
 	delete dialog;
@@ -323,7 +328,7 @@ void MainWindow::slotBWHPFInSharpener()
 	delete dialog;
 }
 
-void MainWindow::slotLaplacianInSharpener()
+void MainWindow::slotLaplacian4InSharpener()
 {
 	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));
 	TemplateMatrix matrix(1);
@@ -337,7 +342,7 @@ void MainWindow::slotLaplacianInSharpener()
 			switch(res)
 			{
 			case 0:
-				w = 5;
+				w = 4;
 				break;
 			case 1:
 				w = -1;
@@ -357,6 +362,129 @@ void MainWindow::slotLaplacianInSharpener()
 	dialog->exec();
 	delete dialog;
 }
+
+void MainWindow::slotLaplacian8InSharpener()
+{
+	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));
+	TemplateMatrix matrix(1);
+	int i,j;
+
+	for ( i = -1; i <= 1; i++)
+	{
+		for ( j = -1; j <= 1; j++)
+		{
+			matrix.setWeightAt(i + 1, j + 1, -1);
+		}
+	}
+    matrix.setWeightAt(1, 1, 8);
+	processingImage = ImageSmoother::setTemplate(processingImage, matrix, 1.0);
+	DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);
+	dialog->exec();
+	delete dialog;
+}
+
+void MainWindow::slotSobelInSharpener()
+{
+	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));
+	TemplateMatrix matrixX(1);   //3X3
+	TemplateMatrix matrixY(1);   //3X3
+	
+	matrixX.setWeightAt(0, 0, 1);
+	matrixX.setWeightAt(0, 1, 0);
+	matrixX.setWeightAt(0, 2,-1);
+	matrixX.setWeightAt(1, 0, 2);
+	matrixX.setWeightAt(1, 1, 0);
+	matrixX.setWeightAt(1, 2, -2);
+	matrixX.setWeightAt(2, 0, 1);
+	matrixX.setWeightAt(2, 1, 0);
+	matrixX.setWeightAt(2, 2, -1);
+
+	matrixY.setWeightAt(0, 0, -1);
+	matrixY.setWeightAt(0, 1, -2);
+	matrixY.setWeightAt(0, 2,-1);
+	matrixY.setWeightAt(1, 0, 0);
+	matrixY.setWeightAt(1, 1, 0);
+	matrixY.setWeightAt(1, 2, 0);
+	matrixY.setWeightAt(2, 0, 1);
+	matrixY.setWeightAt(2, 1, 2);
+	matrixY.setWeightAt(2, 2, 1);
+		
+	processingImage = ImageSharpener::setTemplateInSharpener(processingImage, matrixX,matrixY);
+
+	DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);
+	dialog->exec();
+	delete dialog;
+}
+
+void MainWindow::slotIsotropicInSharpener()
+{
+	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));
+	TemplateMatrix matrixX(1);   //3X3
+	TemplateMatrix matrixY(1);   //3X3
+
+	matrixX.setWeightAt(0, 0, 1);
+	matrixX.setWeightAt(0, 1, 0);
+	matrixX.setWeightAt(0, 2,-1);
+	matrixX.setWeightAt(1, 0, sqrt(2.0));
+	matrixX.setWeightAt(1, 1, 0);
+	matrixX.setWeightAt(1, 2, -sqrt(2.0));
+	matrixX.setWeightAt(2, 0, 1);
+	matrixX.setWeightAt(2, 1, 0);
+	matrixX.setWeightAt(2, 2, -1);
+
+	matrixY.setWeightAt(0, 0, -1);
+	matrixY.setWeightAt(0, 1, -sqrt(2.0));
+	matrixY.setWeightAt(0, 2,-1);
+	matrixY.setWeightAt(1, 0, 0);
+	matrixY.setWeightAt(1, 1, 0);
+	matrixY.setWeightAt(1, 2, 0);
+	matrixY.setWeightAt(2, 0, 1);
+	matrixY.setWeightAt(2, 1, sqrt(2.0));
+	matrixY.setWeightAt(2, 2, 1);
+
+	processingImage = ImageSharpener::setTemplateInSharpener(processingImage, matrixX,matrixY);
+
+	DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);
+	dialog->exec();
+	delete dialog;
+}
+
+
+void MainWindow::slotPrewittInSharpener()
+{
+	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));
+	TemplateMatrix matrixX(1);   //3X3
+	TemplateMatrix matrixY(1);   //3X3
+
+	matrixX.setWeightAt(0, 0, 1);
+	matrixX.setWeightAt(0, 1, 0);
+	matrixX.setWeightAt(0, 2,-1);
+	matrixX.setWeightAt(1, 0, 1);
+	matrixX.setWeightAt(1, 1, 0);
+	matrixX.setWeightAt(1, 2, -1);
+	matrixX.setWeightAt(2, 0, 1);
+	matrixX.setWeightAt(2, 1, 0);
+	matrixX.setWeightAt(2, 2, -1);
+
+	matrixY.setWeightAt(0, 0, -1);
+	matrixY.setWeightAt(0, 1, -1);
+	matrixY.setWeightAt(0, 2,-1);
+	matrixY.setWeightAt(1, 0, 0);
+	matrixY.setWeightAt(1, 1, 0);
+	matrixY.setWeightAt(1, 2, 0);
+	matrixY.setWeightAt(2, 0, 1);
+	matrixY.setWeightAt(2, 1, 1);
+	matrixY.setWeightAt(2, 2, 1);
+
+	processingImage = ImageSharpener::setTemplateInSharpener(processingImage, matrixX,matrixY);
+
+	DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);
+	dialog->exec();
+	delete dialog;
+}
+
+
+
 
 const char *htmlAboutText =
         "<HTML>"

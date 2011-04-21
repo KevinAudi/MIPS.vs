@@ -4,6 +4,7 @@
 #include <QImage>
 #include "templatematrix.h"
 #include <complex>
+#include <math.h>
 
 using namespace std;
 
@@ -32,9 +33,11 @@ public:
 	static QImage process8BitImageInIHP(QImage image,int filterXRadius,int filterYRadius);
 	static QImage process8BitImageInBWHP(QImage image, int radius);
 
+	static QImage process8BitImageInSharpener(QImage image, TemplateMatrix matrixX,TemplateMatrix matrixY);
+
 	//static const double PI = acos(-1.0);
 private:
-	//static int ceilLog2(int value); 
+	static int ceilLog2(int value); 
 };
 
 #endif // IMAGEPREPROCESSOR_H

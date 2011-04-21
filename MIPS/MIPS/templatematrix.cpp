@@ -7,7 +7,7 @@ TemplateMatrix::TemplateMatrix(int radius) : width(1), power(0), radius(radius)
 		width <<= 1;
 		power++;
 	}
-	this->weights = QVector<int>(width  * (2 * radius + 1), 0);
+	this->weights = QVector<double>(width  * (2 * radius + 1), 0);
 }
 
 TemplateMatrix::~TemplateMatrix()
@@ -15,7 +15,7 @@ TemplateMatrix::~TemplateMatrix()
 
 }
 
-void TemplateMatrix::setWeightAt(int x, int  y, int value)
+void TemplateMatrix::setWeightAt(int x, int  y, double value)
 {
 	weights[(x << power) | y] = value;
 }
