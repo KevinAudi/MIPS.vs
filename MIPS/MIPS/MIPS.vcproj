@@ -167,6 +167,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\imageedgedetector.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\imagegrayleveltransformator.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\imagepreprocessor.cpp"
 				>
 			</File>
@@ -225,6 +233,14 @@
 						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\imageedgedetector.h"
+				>
+			</File>
+			<File
+				RelativePath=".\imagegrayleveltransformator.h"
+				>
 			</File>
 			<File
 				RelativePath=".\imagepreprocessor.h"

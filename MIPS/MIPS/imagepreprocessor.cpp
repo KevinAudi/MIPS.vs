@@ -48,31 +48,39 @@ QImage ImagePreprocessor::singleColorChannel(QImage image, ColorChannel channel)
 
 QImage ImagePreprocessor::process8BitImageInTemplate(QImage image, TemplateMatrix matrix, double modulus)
 {
-	//QImage eightBitImage = image;
+	QImage eightBitImage = image;
 	int h = image.height();
 	int w = image.width();
 	int radius = matrix.getRadius();
-	if((image.format()==QImage::Format_Indexed8) && (image.depth() == 8))
-	{
+	double tempPixelValue;
+
+	 
 		for (int x = radius; x <= w - radius - 1; ++x)
 		{
 			for (int y = radius; y <= h - radius - 1; ++y)
-			{
-				unsigned int px = 0;
+			{				              
+				tempPixelValue = 0;
 				for (int i = -radius; i <= radius; i++)
 				{
 					for (int j = -radius; j <= radius; j++)
 					{
-						px += image.pixelIndex(x + i, y + j) * matrix.weightAt(i + radius, j + radius);
+						tempPixelValue += image.pixelIndex(x + i, y + j) * matrix.weightAt(i + radius, j + radius);
 					}
 				}
-				//eightBitImage.setPixel(x, y, px * modulus);
-				image.setPixel(x, y, px * modulus);
+				tempPixelValue *= modulus;
+				uint px  = (uint)tempPixelValue;
+				if(px < 0)
+					px = 0;
+				if(px > 255)
+					px = 255;			
+				//eightBitImage.setPixel( x, h - 1- y, px);	
+				eightBitImage.setPixel(x, y, px);
+				//image.setPixel(x, y, px * modulus);
 			}
 		}
-	}
-	//return eightBitImage;
-	return image;
+	
+	return eightBitImage;
+	//return image;
 }
 
 QImage ImagePreprocessor::mergeColorChannel(QImage red, QImage green, QImage blue)
@@ -671,7 +679,7 @@ QImage ImagePreprocessor::process8BitImageInBWHP(QImage image, int radius)
 
 QImage ImagePreprocessor::process8BitImageInSharpener(QImage image, TemplateMatrix matrixX,TemplateMatrix matrixY)
 {
-	QImage eightBitImage = image;
+    QImage eightBitImage = image;
 	int h = image.height();
 	int w = image.width();
 	int radius = matrixX.getRadius();	

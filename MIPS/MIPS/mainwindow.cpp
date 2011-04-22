@@ -4,8 +4,7 @@
 #include <QImageReader>
 
 #include "mainwindow.h"
-#include "imagesmoother.h"
-#include "imagesharpener.h"
+
 
 //#include <iostream>
 //using namespace std;
@@ -14,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), scaleFactor(1)
 {
     setupUi(this);
-
+    
     QObject::connect(actionGauss_2,SIGNAL(triggered()),this,SLOT(slotGaussInSmoother()));
 	QObject::connect(actionBox_2,SIGNAL(triggered()),this,SLOT(slotBoxInSmoother()));
 	QObject::connect(actionEight_2,SIGNAL(triggered()),this,SLOT(slotEightInSmoother()));
@@ -26,13 +25,19 @@ MainWindow::MainWindow(QWidget *parent)
 
 	QObject::connect(actionIdeal_High_Pass_Filter,SIGNAL(triggered()),this,SLOT(slotIHPFInSharpener()));
 	QObject::connect(actionButter_Worth_HP_Filter,SIGNAL(triggered()),this,SLOT(slotBWHPFInSharpener()));	
-
     QObject::connect(actionL4,SIGNAL(triggered()),this,SLOT(slotLaplacian4InSharpener()));
 	QObject::connect(actionL8,SIGNAL(triggered()),this,SLOT(slotLaplacian8InSharpener()));
-
 	QObject::connect(actionSobel,SIGNAL(triggered()),this,SLOT(slotSobelInSharpener()));
 	QObject::connect(actionIsotropic,SIGNAL(triggered()),this,SLOT(slotIsotropicInSharpener()));
-	QObject::connect(actionPrewitt,SIGNAL(triggered()),this,SLOT(slotPrewittInSharpener()));
+	QObject::connect(actionPrewitt,SIGNAL(triggered()),this,SLOT(slotPrewittInSharpener())); 
+    
+	QObject::connect(actionGradiant,SIGNAL(triggered()),this,SLOT(slotGradiantInEdgeDetector())); 
+	QObject::connect(actionRoberts,SIGNAL(triggered()),this,SLOT(slotRobertsInEdgeDetector())); 
+	QObject::connect(actionSobel_In_ED,SIGNAL(triggered()),this,SLOT(slotRobertsInEdgeDetector())); 
+	QObject::connect(actionLaplace8,SIGNAL(triggered()),this,SLOT(slotLaplacian8InEdgeDetector())); 
+	
+	QObject::connect(actionLinearity,SIGNAL(triggered()),this,SLOT(slotLinearityInTransformator()));
+    
 
     dirModel = new QDirModel(this);
     dirModel->setFilter(QDir::Dirs | QDir::NoDotAndDotDot);
@@ -483,8 +488,99 @@ void MainWindow::slotPrewittInSharpener()
 	delete dialog;
 }
 
+void MainWindow::slotGradiantInEdgeDetector()
+{
+     QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));
+	 char flag = 'M';
+	 double scaleFactor = 2.0;
+	 processingImage = ImageEdgeDetector::useGradiant(processingImage, 'M',2.0);
 
+	 DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);
+	 dialog->exec();
+	 delete dialog;
+}
 
+void MainWindow::slotRobertsInEdgeDetector()
+{
+	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));
+	char flag = 'R';
+	double scaleFactor = 2.0;
+	processingImage = ImageEdgeDetector::useGradiant(processingImage, 'R',2.0);
+
+	DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);
+	dialog->exec();
+	delete dialog;
+}
+
+void MainWindow::slotSobelInEdgeDetector()
+{
+	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));
+	char flag = 'm';
+	double scaleFactor = 4.0;
+
+	TemplateMatrix matrixX(1);   //3X3
+	TemplateMatrix matrixY(1);   //3X3
+
+	matrixX.setWeightAt(0, 0, -1);
+	matrixX.setWeightAt(0, 1, -2);
+	matrixX.setWeightAt(0, 2,-1);
+	matrixX.setWeightAt(1, 0, 0);
+	matrixX.setWeightAt(1, 1, 0);
+	matrixX.setWeightAt(1, 2, 0);
+	matrixX.setWeightAt(2, 0, 1);
+	matrixX.setWeightAt(2, 1, 2);
+	matrixX.setWeightAt(2, 2, 1);
+
+	matrixY.setWeightAt(0, 0, -1);
+	matrixY.setWeightAt(0, 1, 0);
+	matrixY.setWeightAt(0, 2,1);
+	matrixY.setWeightAt(1, 0, -2);
+	matrixY.setWeightAt(1, 1, 0);
+	matrixY.setWeightAt(1, 2, 2);
+	matrixY.setWeightAt(2, 0, -1);
+	matrixY.setWeightAt(2, 1, 0);
+	matrixY.setWeightAt(2, 2, 1);
+
+	processingImage = ImageEdgeDetector::useSobel(processingImage, matrixX,matrixY,'R',2.0);
+
+	DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);
+	dialog->exec();
+	delete dialog;
+}
+
+void MainWindow::slotLaplacian8InEdgeDetector()
+{
+	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));
+	TemplateMatrix matrix(1);
+	int i,j;
+
+	for ( i = -1; i <= 1; i++)
+	{
+		for ( j = -1; j <= 1; j++)
+		{
+			matrix.setWeightAt(i + 1, j + 1, 1);
+		}
+	}
+	matrix.setWeightAt(1, 1, -8);
+	processingImage = ImageSmoother::setTemplate(processingImage, matrix, 1.0);
+	DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);
+	dialog->exec();
+	delete dialog;
+}
+
+void MainWindow::slotLinearityInTransformator()
+{
+    QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));
+    int oldLow = 70;
+	int oldHigh = 210;
+	int newLow = 0;
+	int newHigh = 255;
+
+	processingImage = ImageGrayLevelTransformator::transformGrayLevelInLinearity(processingImage,oldLow,oldHigh,newLow,newHigh);
+	DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);
+	dialog->exec();
+	delete dialog;
+}
 
 const char *htmlAboutText =
         "<HTML>"

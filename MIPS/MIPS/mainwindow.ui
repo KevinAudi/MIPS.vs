@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>467</width>
-    <height>340</height>
+    <width>556</width>
+    <height>387</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -25,8 +25,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>169</width>
-         <height>241</height>
+         <width>390</width>
+         <height>288</height>
         </rect>
        </property>
        <property name="autoFillBackground">
@@ -60,7 +60,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>467</width>
+     <width>556</width>
      <height>23</height>
     </rect>
    </property>
@@ -99,12 +99,13 @@
      <addaction name="actionL4"/>
      <addaction name="actionL8"/>
     </widget>
-    <addaction name="actionIdeal_High_Pass_Filter"/>
-    <addaction name="actionButter_Worth_HP_Filter"/>
     <addaction name="menuLaplacian"/>
     <addaction name="actionPrewitt"/>
     <addaction name="actionIsotropic"/>
     <addaction name="actionSobel"/>
+    <addaction name="separator"/>
+    <addaction name="actionIdeal_High_Pass_Filter"/>
+    <addaction name="actionButter_Worth_HP_Filter"/>
    </widget>
    <widget class="QMenu" name="menu_Smoothness">
     <property name="title">
@@ -128,6 +129,7 @@
     </widget>
     <addaction name="menuNeighbhAveraging"/>
     <addaction name="menuMedian_Filter"/>
+    <addaction name="separator"/>
     <addaction name="actionIdeal_Low_Pass_Filter"/>
     <addaction name="actionButter_Worth_LP_Filter"/>
    </widget>
@@ -137,12 +139,29 @@
     </property>
     <addaction name="actionAbout"/>
    </widget>
+   <widget class="QMenu" name="menuEdge_Detecting">
+    <property name="title">
+     <string>Edge Detecting</string>
+    </property>
+    <addaction name="actionGradiant"/>
+    <addaction name="actionRoberts"/>
+    <addaction name="actionSobel_In_ED"/>
+    <addaction name="actionLaplace8"/>
+   </widget>
+   <widget class="QMenu" name="menuGrayLT">
+    <property name="title">
+     <string>GrayLT</string>
+    </property>
+    <addaction name="actionLinearity"/>
+   </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Edit"/>
    <addaction name="menu_Preview"/>
-   <addaction name="menu_Sharpening"/>
    <addaction name="menu_Smoothness"/>
+   <addaction name="menu_Sharpening"/>
+   <addaction name="menuEdge_Detecting"/>
    <addaction name="menuHelp"/>
+   <addaction name="menuGrayLT"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <property name="focusPolicy">
@@ -374,6 +393,31 @@
   <action name="actionSobel">
    <property name="text">
     <string>Sobel</string>
+   </property>
+  </action>
+  <action name="actionGradiant">
+   <property name="text">
+    <string>Gradiant</string>
+   </property>
+  </action>
+  <action name="actionRoberts">
+   <property name="text">
+    <string>Roberts</string>
+   </property>
+  </action>
+  <action name="actionSobel_In_ED">
+   <property name="text">
+    <string>Sobel In ED</string>
+   </property>
+  </action>
+  <action name="actionLaplace8">
+   <property name="text">
+    <string>Laplace8</string>
+   </property>
+  </action>
+  <action name="actionLinearity">
+   <property name="text">
+    <string>Linearity</string>
    </property>
   </action>
  </widget>

@@ -2,13 +2,17 @@
 #include <QTreeWidgetItem>
 #include <QLabel>
 #include <QScrollArea>
+#include <math.h>
 
 #include "ui_MainWindow.h"
 #include "imagepreprocessor.h"
 #include "displayimagedialog.h"
-#include <math.h>
+#include "imagesmoother.h"
+#include "imagesharpener.h"
+#include "imageedgedetector.h"
+#include "imagegrayleveltransformator.h"
 
-class MainWindow : public QMainWindow, private Ui::MainWindow
+class MainWindow : public QMainWindow,private Ui::MainWindow
 {
 	Q_OBJECT
 
@@ -45,6 +49,13 @@ private slots:
 	void slotSobelInSharpener();
 	void slotPrewittInSharpener();
 	void slotIsotropicInSharpener();
+
+	void slotGradiantInEdgeDetector();
+	void slotRobertsInEdgeDetector();
+	void slotSobelInEdgeDetector();
+	void slotLaplacian8InEdgeDetector();
+
+	void slotLinearityInTransformator();
 
 private:
 	void displayImage(const QString &fileName);

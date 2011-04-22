@@ -9,13 +9,11 @@ class ImageSharpener:private ImagePreprocessor
 public:
 	ImageSharpener();
 	~ImageSharpener();
-
-	//static QImage setTemplateInSharpener(QImage image,TemplateMatrix matrix, double modulus );
-
+	
 	static QImage useIdealHighPassFilter(QImage image, int xRadius, int yRadius);
 	static QImage useButterWorthHighPassFilter(QImage image, int radius);
-
 	static QImage setTemplateInSharpener(QImage image, TemplateMatrix matrixX,TemplateMatrix matrixY);
+
 private:
 	
 };
