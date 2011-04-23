@@ -1,12 +1,15 @@
 #include <QDirModel>
 #include <QTreeWidgetItem>
-#include <QLabel>
-#include <QScrollArea>
+#include <QMessageBox>
+#include <QHeaderView>
+#include <QImageReader>
+
 #include <math.h>
 
 #include "ui_MainWindow.h"
+#include "previewwidget.h"
+
 #include "imagepreprocessor.h"
-#include "displayimagedialog.h"
 #include "imagesmoother.h"
 #include "imagesharpener.h"
 #include "imageedgedetector.h"
@@ -22,10 +25,7 @@ public:
 
 private slots:
 	void on_actionForward_triggered();
-	void on_actionBack_triggered();
-	void on_actionZoomOut_triggered();
-	void on_actionZoomIn_triggered();
-	void on_actionActualSize_triggered();
+	void on_actionBack_triggered();	
 	void on_actionAbout_triggered();
 	void on_treeView_clicked(const QModelIndex & index);
 
@@ -57,9 +57,10 @@ private slots:
 
 	void slotLinearityInTransformator();
 
-private:
-	void displayImage(const QString &fileName);
-	void scaleImage(double factor);
+private:	
+	void connectSignalsAndSlots();
+    void addTreeView();
+	void displayImage();
 	void updateUi();
 
 	QDirModel *dirModel;
@@ -68,6 +69,9 @@ private:
 	QStringList supportedFormat;
 	QStringList displayFiles;
 	QStringList::const_iterator currentFile;
+	QWidget *displayWidget;
 
+	PreViewWidget *previewBefore;
+	PreViewWidget *previewAfter;
 	double scaleFactor;
 };

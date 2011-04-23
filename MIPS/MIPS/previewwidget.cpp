@@ -1,4 +1,5 @@
 #include "previewwidget.h"
+
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QStyle>
@@ -65,9 +66,6 @@ PreViewWidget::PreViewWidget(QWidget *parent) : QWidget(parent)
 	toolLayout->addWidget(zoomOutBtn);
 	toolLayout->addWidget(zoomSlider);
 	toolLayout->addWidget(zoomInBtn);
-
-
-	
 
 	QVBoxLayout *layout = new QVBoxLayout;
 	layout->addLayout(toolLayout);
