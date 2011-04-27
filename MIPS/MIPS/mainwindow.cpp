@@ -10,26 +10,39 @@ MainWindow::MainWindow(QWidget *parent)
 	connectSignalsAndSlots();    
     addTreeView();    
 
-	displayWidget = new QWidget(this);
+	displayWidget = new QWidget(this);	
 	previewBefore = new PreViewWidget(displayWidget);
 	previewAfter = new PreViewWidget(displayWidget);
+    
+	/*previewBefore = new PreViewWidget(this);
+	previewAfter = new PreViewWidget(this);*/
 
-	imageInfo = new QLabel(displayWidget);
-	imageInfo->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+	/*displayWidget->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+	previewBefore->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+	previewAfter->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);*/
+
+  imageInfo = new QLabel(displayWidget);
+//	imageInfo->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+  //  imageInfo = new QLabel(this);
 	imageInfo->setAlignment(Qt::AlignCenter);
-//	mainToolBar->addWidget(imageInfo);
-	
-	QHBoxLayout * HLayout = new QHBoxLayout(displayWidget);
-	HLayout->addWidget(previewBefore);
-	HLayout->addWidget(previewAfter);
 
-	QVBoxLayout * displayWidgetLayout = new QVBoxLayout(displayWidget);
-	displayWidgetLayout->addLayout(HLayout);
-	displayWidgetLayout->addWidget(imageInfo);
+	/*QGridLayout * displayWidgetLayout = new QGridLayout(displayWidget);	
+	displayWidgetLayout->addWidget(imageInfo,0,0,1,2);
+    displayWidgetLayout->addWidget(previewBefore,1,0,1,1);
+	displayWidgetLayout->addWidget(previewAfter,1,1,1,1);
+	displayWidget->setLayout(displayWidgetLayout);*/
+ 
+	QGridLayout * displayWidgetLayout = new QGridLayout(displayWidget);
+    displayWidgetLayout->addWidget(dockWidget, 0,0,2,1);
+	displayWidgetLayout->addWidget(previewBefore, 0,1,1,1);
+	displayWidgetLayout->addWidget(previewAfter, 0,2,1,1);
+	displayWidgetLayout->addWidget(imageInfo, 1,1,1,2);
+	displayWidgetLayout->setColumnStretch(1,10);
+	displayWidgetLayout->setColumnStretch(2,40);
+	displayWidgetLayout->setColumnStretch(3,40);
+    this->setLayout(displayWidgetLayout);
 	
-	displayWidget->setLayout(displayWidgetLayout);
 	this->setCentralWidget(displayWidget);  
-
     
     foreach (QByteArray byteArray, QImageReader::supportedImageFormats())
     {
