@@ -1,5 +1,4 @@
 #include "mainwindow.h"
-#include <QTabWidget>
 
 //#include <iostream>
 //using namespace std;
@@ -11,54 +10,34 @@ MainWindow::MainWindow(QWidget *parent)
 	connectSignalsAndSlots();    
     addTreeView();    
 
-	displayWidget = new QWidget(this);	
-	//previewBefore = new PreViewWidget(displayWidget);
-	//previewAfter = new PreViewWidget(displayWidget);
-    
-    QTabWidget *tabWidget = new QTabWidget(displayWidget);
-	previewBefore = new PreViewWidget;
-	previewAfter = new PreViewWidget;
+	previewBefore = new PreViewWidget();
+	previewAfter = new PreViewWidget();
 	tabWidget->addTab(previewBefore,"&Before");
 	tabWidget->addTab(previewAfter,"&After");
 
-	//QHBoxLayout * mainLayout = new QHBoxLayout;
-	//mainLayout->addWidget()
+//	int width = previewBefore->width();
+//	dockWidget->setMaximumWidth(width / 3 );
 
+//	//displayWidget->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+//	//previewBefore->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+//	//previewAfter->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+//
+//  //  imageInfo = new QLabel(displayWidget);
+////	imageInfo->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+//  //  imageInfo = new QLabel(this);
+//	//imageInfo->setAlignment(Qt::AlignCenter);
 
-    /*
-	int width = previewBefore->width();
-	dockWidget->setMaximumWidth(width / 3 );*/
+//// 	QGridLayout * displayWidgetLayout = new QGridLayout(displayWidget);
+////     displayWidgetLayout->addWidget(dockWidget, 0,0,2,1);
+//// 	displayWidgetLayout->addWidget(previewBefore, 0,1);
+//// 	displayWidgetLayout->addWidget(previewAfter, 0,2);
+//// 	displayWidgetLayout->addWidget(imageInfo, 1,1,1,2);
+//// 	displayWidgetLayout->setColumnStretch(1,10);
+//// 	displayWidgetLayout->setColumnStretch(2,30);
+//// 	displayWidgetLayout->setColumnStretch(3,30);
+////     this->setLayout(displayWidgetLayout);
+   // this->setCentralWidget(displayWidget);  
 
-	/*previewBefore = new PreViewWidget(this);
-	previewAfter = new PreViewWidget(this);*/
-
-	//displayWidget->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-	//previewBefore->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-	//previewAfter->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-
-  //  imageInfo = new QLabel(displayWidget);
-//	imageInfo->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-  //  imageInfo = new QLabel(this);
-	//imageInfo->setAlignment(Qt::AlignCenter);
-
-	/*QGridLayout * displayWidgetLayout = new QGridLayout(displayWidget);	
-	displayWidgetLayout->addWidget(imageInfo,0,0,1,2);
-    displayWidgetLayout->addWidget(previewBefore,1,0,1,1);
-	displayWidgetLayout->addWidget(previewAfter,1,1,1,1);
-	displayWidget->setLayout(displayWidgetLayout);*/
- 
-// 	QGridLayout * displayWidgetLayout = new QGridLayout(displayWidget);
-//     displayWidgetLayout->addWidget(dockWidget, 0,0,2,1);
-// 	displayWidgetLayout->addWidget(previewBefore, 0,1);
-// 	displayWidgetLayout->addWidget(previewAfter, 0,2);
-// 	displayWidgetLayout->addWidget(imageInfo, 1,1,1,2);
-// 	displayWidgetLayout->setColumnStretch(1,10);
-// 	displayWidgetLayout->setColumnStretch(2,30);
-// 	displayWidgetLayout->setColumnStretch(3,30);
-//     this->setLayout(displayWidgetLayout);
-	
-	this->setCentralWidget(displayWidget);  
-	//this->setCentralWidget(tabWidget); 
     
     foreach (QByteArray byteArray, QImageReader::supportedImageFormats())
     {
@@ -69,8 +48,8 @@ MainWindow::MainWindow(QWidget *parent)
 	currentDirectory = new QDir(); 
     currentFile = displayFiles.constBegin();  
 
-    resize(800,600);
-    updateUi();
+  resize(800,600);
+   updateUi();
 }
 
 MainWindow::~MainWindow()
@@ -204,10 +183,9 @@ void MainWindow::slotGaussInSmoother()
 	}
 
 	processingImage = ImageSmoother::setTemplate(processingImage, matrix, 1.0 / 16.0);
-//	processingImage.save("D:/gauss.bmp");
-    /*/*DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);*/
-    /*dialog->exec();*/
-    /*delete dialog;*/
+    //	processingImage.save("D:/gauss.bmp");
+     previewAfter->setImage(processingImage);		
+     
 }
 
 void  MainWindow::slotBoxInSmoother()
@@ -224,10 +202,7 @@ void  MainWindow::slotBoxInSmoother()
 	}
 
 	processingImage = ImageSmoother::setTemplate(processingImage, matrix, 1.0 / 9.0);
-//	processingImage.save("D:/box.bmp");
-	/*DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);*/
-	/*dialog->exec();*/
-	/*delete dialog;*/
+    previewAfter->setImage(processingImage);	
 }
 
 void  MainWindow::slotEightInSmoother()
@@ -245,10 +220,7 @@ void  MainWindow::slotEightInSmoother()
 	matrix.setWeightAt(1,1,0);
 
 	processingImage = ImageSmoother::setTemplate(processingImage, matrix, 1.0/8.0);
-//	processingImage.save("D:/eight.bmp");
-	/*DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);*/
-	/*dialog->exec();*/
-	/*delete dialog;*/
+    previewAfter->setImage(processingImage);	
 }
 
 void  MainWindow::slotTenInSmoother()
@@ -266,30 +238,21 @@ void  MainWindow::slotTenInSmoother()
     matrix.setWeightAt(1,1,2);
 
 	processingImage = ImageSmoother::setTemplate(processingImage, matrix, 1.0 / 10.0);
-	//processingImage.save("D:/ten.bmp");
-	/*DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);*/
-	/*dialog->exec();*/
-	/*delete dialog;*/
+	previewAfter->setImage(processingImage);	
 }
 
 void MainWindow::slotMF5InSmoother()
 {
 	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));
 	processingImage = ImageSmoother::useMedianFilter(processingImage,5);
-	//processingImage.save("D:/MF5.bmp");
-	/*DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);*/
-	/*dialog->exec();*/
-	/*delete dialog;*/
+	previewAfter->setImage(processingImage);	
 }
 
 void MainWindow::slotMF9InSmoother()
 {
 	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));	
 	processingImage = ImageSmoother::useMedianFilter(processingImage,9);
-	//processingImage.save("D:/MF9.bmp");
-	/*DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);*/
-	/*dialog->exec();*/
-	/*delete dialog;*/
+	previewAfter->setImage(processingImage);	
 }
 
 void MainWindow::slotILPFInSmoother()
@@ -298,9 +261,7 @@ void MainWindow::slotILPFInSmoother()
 	 int xRadius = 25;
 	 int yRadius = 25;
 	processingImage = ImageSmoother::useIdealLowPassFilter(processingImage,xRadius,yRadius);
-	/*DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);*/
-	/*dialog->exec();*/
-	/*delete dialog;*/
+	previewAfter->setImage(processingImage);	
 }
 
 void MainWindow::slotBWLPFInSmoother()
@@ -308,9 +269,7 @@ void MainWindow::slotBWLPFInSmoother()
 	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));	
 	int radius = 25;	
 	processingImage = ImageSmoother::useButterWorthLowPassFilter(processingImage,radius);
-	/*DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);*/
-	/*dialog->exec();*/
-	/*delete dialog;*/
+	previewAfter->setImage(processingImage);	
 }
 
 void MainWindow::slotIHPFInSharpener()
@@ -319,9 +278,7 @@ void MainWindow::slotIHPFInSharpener()
 	int xRadius = 5;
 	int yRadius = 5;
 	processingImage = ImageSharpener::useIdealHighPassFilter(processingImage,xRadius,yRadius);
-	/*DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);*/
-	/*dialog->exec();*/
-	/*delete dialog;*/
+	previewAfter->setImage(processingImage);	
 }
 
 void MainWindow::slotBWHPFInSharpener()
@@ -329,9 +286,7 @@ void MainWindow::slotBWHPFInSharpener()
 	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));	
 	int radius = 5;	
 	processingImage = ImageSharpener::useButterWorthHighPassFilter(processingImage,radius);
-	/*DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);*/
-	/*dialog->exec();*/
-	/*delete dialog;*/
+	previewAfter->setImage(processingImage);	
 }
 
 void MainWindow::slotLaplacian4InSharpener()
@@ -364,9 +319,7 @@ void MainWindow::slotLaplacian4InSharpener()
 	}
 
 	processingImage = ImageSmoother::setTemplate(processingImage, matrix, 1.0);
-	/*DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);*/
-	/*dialog->exec();*/
-	/*delete dialog;*/
+	previewAfter->setImage(processingImage);	
 }
 
 void MainWindow::slotLaplacian8InSharpener()
@@ -384,9 +337,7 @@ void MainWindow::slotLaplacian8InSharpener()
 	}
     matrix.setWeightAt(1, 1, 8);
 	processingImage = ImageSmoother::setTemplate(processingImage, matrix, 1.0);
-	/*DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);*/
-	/*dialog->exec();*/
-	/*delete dialog;*/
+	previewAfter->setImage(processingImage);	
 }
 
 void MainWindow::slotSobelInSharpener()
@@ -416,10 +367,7 @@ void MainWindow::slotSobelInSharpener()
 	matrixY.setWeightAt(2, 2, 1);
 		
 	processingImage = ImageSharpener::setTemplateInSharpener(processingImage, matrixX,matrixY);
-
-	/*DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);*/
-	/*dialog->exec();*/
-	/*delete dialog;*/
+    previewAfter->setImage(processingImage);	
 }
 
 void MainWindow::slotIsotropicInSharpener()
@@ -449,12 +397,8 @@ void MainWindow::slotIsotropicInSharpener()
 	matrixY.setWeightAt(2, 2, 1);
 
 	processingImage = ImageSharpener::setTemplateInSharpener(processingImage, matrixX,matrixY);
-
-	/*DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);*/
-	/*dialog->exec();*/
-	/*delete dialog;*/
+    previewAfter->setImage(processingImage);	
 }
-
 
 void MainWindow::slotPrewittInSharpener()
 {
@@ -483,10 +427,7 @@ void MainWindow::slotPrewittInSharpener()
 	matrixY.setWeightAt(2, 2, 1);
 
 	processingImage = ImageSharpener::setTemplateInSharpener(processingImage, matrixX,matrixY);
-
-	/*DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);*/
-	/*dialog->exec();*/
-	/*delete dialog;*/
+   previewAfter->setImage(processingImage);	
 }
 
 void MainWindow::slotGradiantInEdgeDetector()
@@ -495,10 +436,7 @@ void MainWindow::slotGradiantInEdgeDetector()
 	 char flag = 'M';
 	 double scaleFactor = 2.0;
 	 processingImage = ImageEdgeDetector::useGradiant(processingImage, 'M',2.0);
-
-	 /*DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);*/
-	 /*dialog->exec();*/
-	 /*delete dialog;*/
+     previewAfter->setImage(processingImage);	
 }
 
 void MainWindow::slotRobertsInEdgeDetector()
@@ -507,10 +445,7 @@ void MainWindow::slotRobertsInEdgeDetector()
 	char flag = 'R';
 	double scaleFactor = 2.0;
 	processingImage = ImageEdgeDetector::useGradiant(processingImage, 'R',2.0);
-
-	/*DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);*/
-	/*dialog->exec();*/
-	/*delete dialog;*/
+    previewAfter->setImage(processingImage);	
 }
 
 void MainWindow::slotSobelInEdgeDetector()
@@ -543,10 +478,7 @@ void MainWindow::slotSobelInEdgeDetector()
 	matrixY.setWeightAt(2, 2, 1);
 
 	processingImage = ImageEdgeDetector::useSobel(processingImage, matrixX,matrixY,'R',2.0);
-
-	/*DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);*/
-	/*dialog->exec();*/
-	/*delete dialog;*/
+    previewAfter->setImage(processingImage);	
 }
 
 void MainWindow::slotLaplacian8InEdgeDetector()
@@ -564,9 +496,7 @@ void MainWindow::slotLaplacian8InEdgeDetector()
 	}
 	matrix.setWeightAt(1, 1, -8);
 	processingImage = ImageSmoother::setTemplate(processingImage, matrix, 1.0);
-	/*DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);*/
-	/*dialog->exec();*/
-	/*delete dialog;*/
+	previewAfter->setImage(processingImage);	
 }
 
 void MainWindow::slotLinearityInTransformator()
@@ -578,9 +508,7 @@ void MainWindow::slotLinearityInTransformator()
 	int newHigh = 255;
 
 	processingImage = ImageGrayLevelTransformator::transformGrayLevelInLinearity(processingImage,oldLow,oldHigh,newLow,newHigh);
-	/*DisplayImageDialog *dialog = new DisplayImageDialog(processingImage,this);*/
-	/*dialog->exec();*/
-	/*delete dialog;*/
+	previewAfter->setImage(processingImage);	
 }
 
 const char *htmlAboutText =

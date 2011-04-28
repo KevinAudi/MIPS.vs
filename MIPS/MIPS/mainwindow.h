@@ -64,7 +64,7 @@ private:
 	void updateUi();
 
 	QDirModel *dirModel;
-	QLabel *imageInfo;
+	//QLabel *imageInfo;
 	QDir *currentDirectory;
 	QStringList supportedFormat;
 	QStringList displayFiles;
