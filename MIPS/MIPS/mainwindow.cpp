@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include <QTabWidget>
 
 //#include <iostream>
 //using namespace std;
@@ -11,20 +12,34 @@ MainWindow::MainWindow(QWidget *parent)
     addTreeView();    
 
 	displayWidget = new QWidget(this);	
-	previewBefore = new PreViewWidget(displayWidget);
-	previewAfter = new PreViewWidget(displayWidget);
+	//previewBefore = new PreViewWidget(displayWidget);
+	//previewAfter = new PreViewWidget(displayWidget);
     
+    QTabWidget *tabWidget = new QTabWidget(displayWidget);
+	previewBefore = new PreViewWidget;
+	previewAfter = new PreViewWidget;
+	tabWidget->addTab(previewBefore,"&Before");
+	tabWidget->addTab(previewAfter,"&After");
+
+	//QHBoxLayout * mainLayout = new QHBoxLayout;
+	//mainLayout->addWidget()
+
+
+    /*
+	int width = previewBefore->width();
+	dockWidget->setMaximumWidth(width / 3 );*/
+
 	/*previewBefore = new PreViewWidget(this);
 	previewAfter = new PreViewWidget(this);*/
 
-	/*displayWidget->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-	previewBefore->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-	previewAfter->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);*/
+	//displayWidget->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+	//previewBefore->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+	//previewAfter->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
 
-  imageInfo = new QLabel(displayWidget);
+  //  imageInfo = new QLabel(displayWidget);
 //	imageInfo->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
   //  imageInfo = new QLabel(this);
-	imageInfo->setAlignment(Qt::AlignCenter);
+	//imageInfo->setAlignment(Qt::AlignCenter);
 
 	/*QGridLayout * displayWidgetLayout = new QGridLayout(displayWidget);	
 	displayWidgetLayout->addWidget(imageInfo,0,0,1,2);
@@ -32,17 +47,18 @@ MainWindow::MainWindow(QWidget *parent)
 	displayWidgetLayout->addWidget(previewAfter,1,1,1,1);
 	displayWidget->setLayout(displayWidgetLayout);*/
  
-	QGridLayout * displayWidgetLayout = new QGridLayout(displayWidget);
-    displayWidgetLayout->addWidget(dockWidget, 0,0,2,1);
-	displayWidgetLayout->addWidget(previewBefore, 0,1,1,1);
-	displayWidgetLayout->addWidget(previewAfter, 0,2,1,1);
-	displayWidgetLayout->addWidget(imageInfo, 1,1,1,2);
-	displayWidgetLayout->setColumnStretch(1,10);
-	displayWidgetLayout->setColumnStretch(2,40);
-	displayWidgetLayout->setColumnStretch(3,40);
-    this->setLayout(displayWidgetLayout);
+// 	QGridLayout * displayWidgetLayout = new QGridLayout(displayWidget);
+//     displayWidgetLayout->addWidget(dockWidget, 0,0,2,1);
+// 	displayWidgetLayout->addWidget(previewBefore, 0,1);
+// 	displayWidgetLayout->addWidget(previewAfter, 0,2);
+// 	displayWidgetLayout->addWidget(imageInfo, 1,1,1,2);
+// 	displayWidgetLayout->setColumnStretch(1,10);
+// 	displayWidgetLayout->setColumnStretch(2,30);
+// 	displayWidgetLayout->setColumnStretch(3,30);
+//     this->setLayout(displayWidgetLayout);
 	
 	this->setCentralWidget(displayWidget);  
+	//this->setCentralWidget(tabWidget); 
     
     foreach (QByteArray byteArray, QImageReader::supportedImageFormats())
     {
