@@ -147,6 +147,7 @@
    </attribute>
    <addaction name="actionBack"/>
    <addaction name="actionForward"/>
+   <addaction name="actionSave"/>
    <addaction name="actionAbout"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
@@ -1260,7 +1261,7 @@
   <action name="actionRename">
    <property name="icon">
     <iconset resource="image.qrc">
-     <normaloff>:/MIPS/images/rename.jpg</normaloff>:/MIPS/images/rename.jpg</iconset>
+     <normaloff>:/MIPS/images/rename.png</normaloff>:/MIPS/images/rename.png</iconset>
    </property>
    <property name="text">
     <string>Rename</string>
@@ -1397,6 +1398,15 @@
   <action name="actionLinearity">
    <property name="text">
     <string>Linearity</string>
+   </property>
+  </action>
+  <action name="actionRotate">
+   <property name="icon">
+    <iconset resource="image.qrc">
+     <normaloff>:/MIPS/images/rotate.png</normaloff>:/MIPS/images/rotate.png</iconset>
+   </property>
+   <property name="text">
+    <string>Rotate</string>
    </property>
   </action>
  </widget>

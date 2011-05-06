@@ -3,6 +3,7 @@
 #include <QMessageBox>
 #include <QHeaderView>
 #include <QImageReader>
+#include <QFileDialog>
 
 #include <math.h>
 
@@ -27,7 +28,10 @@ private slots:
 	void on_actionForward_triggered();
 	void on_actionBack_triggered();	
 	void on_actionAbout_triggered();
+   // void on_actionRotate_triggered();
+	void on_actionSave_triggered();
 	void on_treeView_clicked(const QModelIndex & index);
+
 
 	void slotGaussInSmoother();
 	void slotBoxInSmoother();
@@ -70,6 +74,7 @@ private:
 	QStringList displayFiles;
 	QStringList::const_iterator currentFile;
 	QWidget *displayWidget;
+	QImage imageAfterProcessing;
 
 	PreViewWidget *previewBefore;
 	PreViewWidget *previewAfter;

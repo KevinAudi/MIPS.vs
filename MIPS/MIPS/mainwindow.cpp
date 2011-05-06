@@ -14,30 +14,6 @@ MainWindow::MainWindow(QWidget *parent)
 	previewAfter = new PreViewWidget();
 	tabWidget->addTab(previewBefore,"&Before");
 	tabWidget->addTab(previewAfter,"&After");
-
-//	int width = previewBefore->width();
-//	dockWidget->setMaximumWidth(width / 3 );
-
-//	//displayWidget->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-//	//previewBefore->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-//	//previewAfter->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-//
-//  //  imageInfo = new QLabel(displayWidget);
-////	imageInfo->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-//  //  imageInfo = new QLabel(this);
-//	//imageInfo->setAlignment(Qt::AlignCenter);
-
-//// 	QGridLayout * displayWidgetLayout = new QGridLayout(displayWidget);
-////     displayWidgetLayout->addWidget(dockWidget, 0,0,2,1);
-//// 	displayWidgetLayout->addWidget(previewBefore, 0,1);
-//// 	displayWidgetLayout->addWidget(previewAfter, 0,2);
-//// 	displayWidgetLayout->addWidget(imageInfo, 1,1,1,2);
-//// 	displayWidgetLayout->setColumnStretch(1,10);
-//// 	displayWidgetLayout->setColumnStretch(2,30);
-//// 	displayWidgetLayout->setColumnStretch(3,30);
-////     this->setLayout(displayWidgetLayout);
-   // this->setCentralWidget(displayWidget);  
-
     
     foreach (QByteArray byteArray, QImageReader::supportedImageFormats())
     {
@@ -131,6 +107,13 @@ void MainWindow::on_actionBack_triggered()
     updateUi();
 }
 
+void MainWindow::on_actionSave_triggered()
+{
+	QString savedFileName = QFileDialog::getSaveFileName(this,tr("Save Image"), ".",
+		tr("Images (*.bmp *.png *.pbm *.jpg *.jpeg *.tiff);;Text files (*.txt);;XML files (*.xml)"));
+	imageAfterProcessing.save(savedFileName);	
+}
+
 void MainWindow::on_treeView_clicked ( const QModelIndex &index )
 {
     const QString path = dirModel->data(index, QDirModel::FilePathRole).toString();
@@ -154,9 +137,10 @@ void MainWindow::displayImage()
 	previewBefore->setImage(disImage);		
 }
 
+
 void MainWindow::slotGaussInSmoother()
 {
-    QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));
+    imageAfterProcessing = QImage(currentDirectory->absoluteFilePath(*currentFile));
 	TemplateMatrix matrix(1);
 	for (int i = -1; i <= 1; i++)
 	{
@@ -182,15 +166,13 @@ void MainWindow::slotGaussInSmoother()
 		}
 	}
 
-	processingImage = ImageSmoother::setTemplate(processingImage, matrix, 1.0 / 16.0);
-    //	processingImage.save("D:/gauss.bmp");
-     previewAfter->setImage(processingImage);		
-     
+	imageAfterProcessing = ImageSmoother::setTemplate(imageAfterProcessing, matrix, 1.0 / 16.0);   
+     previewAfter->setImage(imageAfterProcessing);		     
 }
 
 void  MainWindow::slotBoxInSmoother()
 {
-	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));
+	imageAfterProcessing = QImage(currentDirectory->absoluteFilePath(*currentFile));
 	TemplateMatrix matrix(1);
 	
 	for (int i = -1; i <= 1; i++)
@@ -201,13 +183,13 @@ void  MainWindow::slotBoxInSmoother()
 		}
 	}
 
-	processingImage = ImageSmoother::setTemplate(processingImage, matrix, 1.0 / 9.0);
-    previewAfter->setImage(processingImage);	
+	imageAfterProcessing = ImageSmoother::setTemplate(imageAfterProcessing, matrix, 1.0 / 9.0);
+    previewAfter->setImage(imageAfterProcessing);	
 }
 
 void  MainWindow::slotEightInSmoother()
 {
-	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));
+	imageAfterProcessing = QImage(currentDirectory->absoluteFilePath(*currentFile));
 	TemplateMatrix matrix(1);
 
 	for (int i = -1; i <= 1; i++)
@@ -219,13 +201,13 @@ void  MainWindow::slotEightInSmoother()
 	}
 	matrix.setWeightAt(1,1,0);
 
-	processingImage = ImageSmoother::setTemplate(processingImage, matrix, 1.0/8.0);
-    previewAfter->setImage(processingImage);	
+	imageAfterProcessing = ImageSmoother::setTemplate(imageAfterProcessing, matrix, 1.0/8.0);
+    previewAfter->setImage(imageAfterProcessing);	
 }
 
 void  MainWindow::slotTenInSmoother()
 {
-	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));
+	imageAfterProcessing = QImage(currentDirectory->absoluteFilePath(*currentFile));
 	TemplateMatrix matrix(1);
 
 	for (int i = -1; i <= 1; i++)
@@ -237,61 +219,61 @@ void  MainWindow::slotTenInSmoother()
 	}
     matrix.setWeightAt(1,1,2);
 
-	processingImage = ImageSmoother::setTemplate(processingImage, matrix, 1.0 / 10.0);
-	previewAfter->setImage(processingImage);	
+	imageAfterProcessing = ImageSmoother::setTemplate(imageAfterProcessing, matrix, 1.0 / 10.0);
+	previewAfter->setImage(imageAfterProcessing);	
 }
 
 void MainWindow::slotMF5InSmoother()
 {
-	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));
-	processingImage = ImageSmoother::useMedianFilter(processingImage,5);
-	previewAfter->setImage(processingImage);	
+	imageAfterProcessing = QImage(currentDirectory->absoluteFilePath(*currentFile));
+	imageAfterProcessing = ImageSmoother::useMedianFilter(imageAfterProcessing,5);
+	previewAfter->setImage(imageAfterProcessing);	
 }
 
 void MainWindow::slotMF9InSmoother()
 {
-	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));	
-	processingImage = ImageSmoother::useMedianFilter(processingImage,9);
-	previewAfter->setImage(processingImage);	
+	imageAfterProcessing = QImage(currentDirectory->absoluteFilePath(*currentFile));	
+	imageAfterProcessing = ImageSmoother::useMedianFilter(imageAfterProcessing,9);
+	previewAfter->setImage(imageAfterProcessing);	
 }
 
 void MainWindow::slotILPFInSmoother()
 {
-	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));	
+	imageAfterProcessing = QImage(currentDirectory->absoluteFilePath(*currentFile));	
 	 int xRadius = 25;
 	 int yRadius = 25;
-	processingImage = ImageSmoother::useIdealLowPassFilter(processingImage,xRadius,yRadius);
-	previewAfter->setImage(processingImage);	
+	imageAfterProcessing = ImageSmoother::useIdealLowPassFilter(imageAfterProcessing,xRadius,yRadius);
+	previewAfter->setImage(imageAfterProcessing);	
 }
 
 void MainWindow::slotBWLPFInSmoother()
 {
-	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));	
+	imageAfterProcessing = QImage(currentDirectory->absoluteFilePath(*currentFile));	
 	int radius = 25;	
-	processingImage = ImageSmoother::useButterWorthLowPassFilter(processingImage,radius);
-	previewAfter->setImage(processingImage);	
+	imageAfterProcessing = ImageSmoother::useButterWorthLowPassFilter(imageAfterProcessing,radius);
+	previewAfter->setImage(imageAfterProcessing);	
 }
 
 void MainWindow::slotIHPFInSharpener()
 {
-	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));	
+	imageAfterProcessing = QImage(currentDirectory->absoluteFilePath(*currentFile));	
 	int xRadius = 5;
 	int yRadius = 5;
-	processingImage = ImageSharpener::useIdealHighPassFilter(processingImage,xRadius,yRadius);
-	previewAfter->setImage(processingImage);	
+	imageAfterProcessing = ImageSharpener::useIdealHighPassFilter(imageAfterProcessing,xRadius,yRadius);
+	previewAfter->setImage(imageAfterProcessing);	
 }
 
 void MainWindow::slotBWHPFInSharpener()
 {
-	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));	
+	imageAfterProcessing = QImage(currentDirectory->absoluteFilePath(*currentFile));	
 	int radius = 5;	
-	processingImage = ImageSharpener::useButterWorthHighPassFilter(processingImage,radius);
-	previewAfter->setImage(processingImage);	
+	imageAfterProcessing = ImageSharpener::useButterWorthHighPassFilter(imageAfterProcessing,radius);
+	previewAfter->setImage(imageAfterProcessing);	
 }
 
 void MainWindow::slotLaplacian4InSharpener()
 {
-	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));
+	imageAfterProcessing = QImage(currentDirectory->absoluteFilePath(*currentFile));
 	TemplateMatrix matrix(1);
 
 	for (int i = -1; i <= 1; i++)
@@ -318,13 +300,13 @@ void MainWindow::slotLaplacian4InSharpener()
 		}
 	}
 
-	processingImage = ImageSmoother::setTemplate(processingImage, matrix, 1.0);
-	previewAfter->setImage(processingImage);	
+	imageAfterProcessing = ImageSmoother::setTemplate(imageAfterProcessing, matrix, 1.0);
+	previewAfter->setImage(imageAfterProcessing);	
 }
 
 void MainWindow::slotLaplacian8InSharpener()
 {
-	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));
+	imageAfterProcessing = QImage(currentDirectory->absoluteFilePath(*currentFile));
 	TemplateMatrix matrix(1);
 	int i,j;
 
@@ -336,13 +318,13 @@ void MainWindow::slotLaplacian8InSharpener()
 		}
 	}
     matrix.setWeightAt(1, 1, 8);
-	processingImage = ImageSmoother::setTemplate(processingImage, matrix, 1.0);
-	previewAfter->setImage(processingImage);	
+	imageAfterProcessing = ImageSmoother::setTemplate(imageAfterProcessing, matrix, 1.0);
+	previewAfter->setImage(imageAfterProcessing);	
 }
 
 void MainWindow::slotSobelInSharpener()
 {
-	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));
+	imageAfterProcessing = QImage(currentDirectory->absoluteFilePath(*currentFile));
 	TemplateMatrix matrixX(1);   //3X3
 	TemplateMatrix matrixY(1);   //3X3
 	
@@ -366,13 +348,13 @@ void MainWindow::slotSobelInSharpener()
 	matrixY.setWeightAt(2, 1, 2);
 	matrixY.setWeightAt(2, 2, 1);
 		
-	processingImage = ImageSharpener::setTemplateInSharpener(processingImage, matrixX,matrixY);
-    previewAfter->setImage(processingImage);	
+	imageAfterProcessing = ImageSharpener::setTemplateInSharpener(imageAfterProcessing, matrixX,matrixY);
+    previewAfter->setImage(imageAfterProcessing);	
 }
 
 void MainWindow::slotIsotropicInSharpener()
 {
-	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));
+	imageAfterProcessing = QImage(currentDirectory->absoluteFilePath(*currentFile));
 	TemplateMatrix matrixX(1);   //3X3
 	TemplateMatrix matrixY(1);   //3X3
 
@@ -396,13 +378,13 @@ void MainWindow::slotIsotropicInSharpener()
 	matrixY.setWeightAt(2, 1, sqrt(2.0));
 	matrixY.setWeightAt(2, 2, 1);
 
-	processingImage = ImageSharpener::setTemplateInSharpener(processingImage, matrixX,matrixY);
-    previewAfter->setImage(processingImage);	
+	imageAfterProcessing = ImageSharpener::setTemplateInSharpener(imageAfterProcessing, matrixX,matrixY);
+    previewAfter->setImage(imageAfterProcessing);	
 }
 
 void MainWindow::slotPrewittInSharpener()
 {
-	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));
+	imageAfterProcessing = QImage(currentDirectory->absoluteFilePath(*currentFile));
 	TemplateMatrix matrixX(1);   //3X3
 	TemplateMatrix matrixY(1);   //3X3
 
@@ -426,31 +408,31 @@ void MainWindow::slotPrewittInSharpener()
 	matrixY.setWeightAt(2, 1, 1);
 	matrixY.setWeightAt(2, 2, 1);
 
-	processingImage = ImageSharpener::setTemplateInSharpener(processingImage, matrixX,matrixY);
-   previewAfter->setImage(processingImage);	
+	imageAfterProcessing = ImageSharpener::setTemplateInSharpener(imageAfterProcessing, matrixX,matrixY);
+   previewAfter->setImage(imageAfterProcessing);	
 }
 
 void MainWindow::slotGradiantInEdgeDetector()
 {
-     QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));
+     imageAfterProcessing = QImage(currentDirectory->absoluteFilePath(*currentFile));
 	 char flag = 'M';
 	 double scaleFactor = 2.0;
-	 processingImage = ImageEdgeDetector::useGradiant(processingImage, 'M',2.0);
-     previewAfter->setImage(processingImage);	
+	 imageAfterProcessing = ImageEdgeDetector::useGradiant(imageAfterProcessing, 'M',2.0);
+     previewAfter->setImage(imageAfterProcessing);	
 }
 
 void MainWindow::slotRobertsInEdgeDetector()
 {
-	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));
+	imageAfterProcessing = QImage(currentDirectory->absoluteFilePath(*currentFile));
 	char flag = 'R';
 	double scaleFactor = 2.0;
-	processingImage = ImageEdgeDetector::useGradiant(processingImage, 'R',2.0);
-    previewAfter->setImage(processingImage);	
+	imageAfterProcessing = ImageEdgeDetector::useGradiant(imageAfterProcessing, 'R',2.0);
+    previewAfter->setImage(imageAfterProcessing);	
 }
 
 void MainWindow::slotSobelInEdgeDetector()
 {
-	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));
+	imageAfterProcessing = QImage(currentDirectory->absoluteFilePath(*currentFile));
 	char flag = 'm';
 	double scaleFactor = 4.0;
 
@@ -477,13 +459,13 @@ void MainWindow::slotSobelInEdgeDetector()
 	matrixY.setWeightAt(2, 1, 0);
 	matrixY.setWeightAt(2, 2, 1);
 
-	processingImage = ImageEdgeDetector::useSobel(processingImage, matrixX,matrixY,'R',2.0);
-    previewAfter->setImage(processingImage);	
+	imageAfterProcessing = ImageEdgeDetector::useSobel(imageAfterProcessing, matrixX,matrixY,'R',2.0);
+    previewAfter->setImage(imageAfterProcessing);	
 }
 
 void MainWindow::slotLaplacian8InEdgeDetector()
 {
-	QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));
+	imageAfterProcessing = QImage(currentDirectory->absoluteFilePath(*currentFile));
 	TemplateMatrix matrix(1);
 	int i,j;
 
@@ -495,27 +477,27 @@ void MainWindow::slotLaplacian8InEdgeDetector()
 		}
 	}
 	matrix.setWeightAt(1, 1, -8);
-	processingImage = ImageSmoother::setTemplate(processingImage, matrix, 1.0);
-	previewAfter->setImage(processingImage);	
+	imageAfterProcessing = ImageSmoother::setTemplate(imageAfterProcessing, matrix, 1.0);
+	previewAfter->setImage(imageAfterProcessing);	
 }
 
 void MainWindow::slotLinearityInTransformator()
 {
-    QImage processingImage = QImage(currentDirectory->absoluteFilePath(*currentFile));
+    imageAfterProcessing = QImage(currentDirectory->absoluteFilePath(*currentFile));
     int oldLow = 70;
 	int oldHigh = 210;
 	int newLow = 0;
 	int newHigh = 255;
 
-	processingImage = ImageGrayLevelTransformator::transformGrayLevelInLinearity(processingImage,oldLow,oldHigh,newLow,newHigh);
-	previewAfter->setImage(processingImage);	
+	imageAfterProcessing = ImageGrayLevelTransformator::transformGrayLevelInLinearity(imageAfterProcessing,oldLow,oldHigh,newLow,newHigh);
+	previewAfter->setImage(imageAfterProcessing);	
 }
 
 const char *htmlAboutText =
         "<HTML>"
         "<p>The MIPS (Medical Image Preprocessing System) is mainly designed to enhance the medical images.</p>"
         "<p>This program is subject to the GPL license.</p>"
-        "<p>Written by Kevin Chow.</p>"
+        "<p>Powered by Kevin Chow.</p>"
         "<p>Current Version 0.9.1"
         "</HTML>";
 

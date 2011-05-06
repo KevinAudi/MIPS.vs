@@ -43,7 +43,13 @@ PreViewWidget::PreViewWidget(QWidget *parent) : QWidget(parent)
 	zoomOutBtn->setAutoRepeatDelay(0);
 	zoomOutBtn->setIcon(QPixmap(":/MIPS/images/zoom-out.png"));
 	zoomOutBtn->setIconSize(iconSize);
-
+    
+    rotateBtn = new QToolButton(this);
+//	rotateBtn->setAutoRepeat(true);
+//	rotateBtn->setAutoRepeatInterval(33);
+//	rotateBtn->setAutoRepeatDelay(0);
+	rotateBtn->setIcon(QPixmap(":/MIPS/images/rotate.png"));
+	rotateBtn->setIconSize(iconSize);
 
 	zoomSlider = new QSlider(Qt::Horizontal, this);
 	zoomSlider->setMaximum(400);
@@ -57,6 +63,7 @@ PreViewWidget::PreViewWidget(QWidget *parent) : QWidget(parent)
 	connect(zoomSlider, SIGNAL(valueChanged(int)), this, SLOT(zoomRateChange(int)));
 	connect(zoomInBtn, SIGNAL(clicked()), this, SLOT(zoomRateInc()));
 	connect(zoomOutBtn, SIGNAL(clicked()), this, SLOT(zoomRateDec()));
+	connect(rotateBtn, SIGNAL(clicked()), this, SLOT(rotateImage()));
 	zoomSlider->setValue(100);
 
 	QLayout *toolLayout = new QHBoxLayout;
@@ -66,6 +73,7 @@ PreViewWidget::PreViewWidget(QWidget *parent) : QWidget(parent)
 	toolLayout->addWidget(zoomOutBtn);
 	toolLayout->addWidget(zoomSlider);
 	toolLayout->addWidget(zoomInBtn);
+	toolLayout->addWidget(rotateBtn);
 
 	QVBoxLayout *layout = new QVBoxLayout;
 	layout->addLayout(toolLayout);
@@ -124,4 +132,9 @@ void PreViewWidget::zoomRateInc()
 void PreViewWidget::zoomRateDec()
 {
 	zoomSlider->setValue(zoomSlider->value() - 1);
+}
+
+void PreViewWidget::rotateImage()
+{
+	view->rotate(90);
 }

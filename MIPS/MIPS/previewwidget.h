@@ -10,7 +10,6 @@
 #include <QSpinBox>
 #include <QSizeF>
 
-
 class PreViewWidget :
 	public QWidget
 {
@@ -23,20 +22,21 @@ public:
 private:
 	QGraphicsScene *scene;
 	QGraphicsView *view;
-	QGraphicsPixmapItem *item;
-	
+	QGraphicsPixmapItem *item;	
 	QSlider *zoomSlider;
 	QToolButton *zoomInBtn;
 	QToolButton *zoomOutBtn;
+	QToolButton *rotateBtn;
 	QSpinBox *zoomRateSpin;
 	QToolButton *zoomResetBtn;
 	QToolButton *zoomFitBtn;
-
 	QSizeF viewSizeF;
+
 private slots:
 	void zoomFit();
 	void zoomReset();
 	void zoomRateChange(int rate);
 	void zoomRateInc();
 	void zoomRateDec();
+	void rotateImage();
 };
