@@ -75,8 +75,8 @@ QImage ImageEdgeDetector::process8BitImageInSobel(QImage image, TemplateMatrix m
 			{
 				for (int j = -radius; j <= radius; j++)
 				{
-					pxX += image.pixelIndex(x + i, y + j) * matrixX.weightAt(i + radius, j + radius);
-					pxY += image.pixelIndex(x + i, y + j) * matrixY.weightAt(i + radius, j + radius);				
+					pxX += image.pixelIndex(x + i, y + j) * matrixX.getWeightAt(i + radius, j + radius);
+					pxY += image.pixelIndex(x + i, y + j) * matrixY.getWeightAt(i + radius, j + radius);				
 				}
 			}
 			pxX = abs(pxX);

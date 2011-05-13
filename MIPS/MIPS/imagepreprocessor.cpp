@@ -64,7 +64,7 @@ QImage ImagePreprocessor::process8BitImageInTemplate(QImage image, TemplateMatri
 				{
 					for (int j = -radius; j <= radius; j++)
 					{
-						tempPixelValue += image.pixelIndex(x + i, y + j) * matrix.weightAt(i + radius, j + radius);
+						tempPixelValue += image.pixelIndex(x + i, y + j) * matrix.getWeightAt(i + radius, j + radius);
 					}
 				}
 				tempPixelValue *= modulus;
@@ -696,8 +696,8 @@ QImage ImagePreprocessor::process8BitImageInSharpener(QImage image, TemplateMatr
 				{
 					for (int j = -radius; j <= radius; j++)
 					{
-						pxX += image.pixelIndex(x + i, y + j) * matrixX.weightAt(i + radius, j + radius);
-						pxY += image.pixelIndex(x + i, y + j) * matrixY.weightAt(i + radius, j + radius);
+						pxX += image.pixelIndex(x + i, y + j) * matrixX.getWeightAt(i + radius, j + radius);
+						pxY += image.pixelIndex(x + i, y + j) * matrixY.getWeightAt(i + radius, j + radius);
                         tempPixelValue = sqrt(pxX * pxX + pxY * pxY);
 					}
 				}

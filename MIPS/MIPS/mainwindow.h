@@ -8,6 +8,7 @@
 #include <math.h>
 
 #include "ui_MainWindow.h"
+/*#include "displaymatrix.h"*/
 #include "previewwidget.h"
 
 #include "imagepreprocessor.h"
@@ -27,8 +28,7 @@ public:
 private slots:
 	void on_actionForward_triggered();
 	void on_actionBack_triggered();	
-	void on_actionAbout_triggered();
-   // void on_actionRotate_triggered();
+	void on_actionAbout_triggered();  
 	void on_actionSave_triggered();
 	void on_treeView_clicked(const QModelIndex & index);
 
@@ -66,17 +66,21 @@ private:
     void addTreeView();
 	void displayImage();
 	void updateUi();
+	QImage compareImage(QImage imageB, QImage imageA);
 
-	QDirModel *dirModel;
-	//QLabel *imageInfo;
+	QDirModel *dirModel;	
 	QDir *currentDirectory;
 	QStringList supportedFormat;
 	QStringList displayFiles;
 	QStringList::const_iterator currentFile;
 	QWidget *displayWidget;
+	QImage imageBeforeProcessing;
 	QImage imageAfterProcessing;
+	QImage imageInDistinction;
+	QString originFileName;
 
 	PreViewWidget *previewBefore;
 	PreViewWidget *previewAfter;
+	PreViewWidget *comparison;
 	double scaleFactor;
 };

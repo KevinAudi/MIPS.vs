@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>556</width>
+    <width>818</width>
     <height>387</height>
    </rect>
   </property>
@@ -36,7 +36,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>556</width>
+     <width>818</width>
      <height>23</height>
     </rect>
    </property>
@@ -45,13 +45,6 @@
      <string>&amp;File</string>
     </property>
     <addaction name="actionSave"/>
-   </widget>
-   <widget class="QMenu" name="menu_Edit">
-    <property name="title">
-     <string>&amp;Edit</string>
-    </property>
-    <addaction name="actionRename"/>
-    <addaction name="actionMark"/>
    </widget>
    <widget class="QMenu" name="menu_Preview">
     <property name="title">
@@ -127,7 +120,6 @@
     <addaction name="actionLinearity"/>
    </widget>
    <addaction name="menu_File"/>
-   <addaction name="menu_Edit"/>
    <addaction name="menu_Preview"/>
    <addaction name="menu_Smoothness"/>
    <addaction name="menu_Sharpening"/>
@@ -148,6 +140,31 @@
    <addaction name="actionBack"/>
    <addaction name="actionForward"/>
    <addaction name="actionSave"/>
+   <addaction name="separator"/>
+   <addaction name="actionGauss_2"/>
+   <addaction name="actionBox_2"/>
+   <addaction name="actionEight_2"/>
+   <addaction name="actionTen_2"/>
+   <addaction name="actionMF5"/>
+   <addaction name="actionMF9"/>
+   <addaction name="actionIdeal_Low_Pass_Filter"/>
+   <addaction name="actionButter_Worth_LP_Filter"/>
+   <addaction name="separator"/>
+   <addaction name="actionL4"/>
+   <addaction name="actionL8"/>
+   <addaction name="actionPrewitt"/>
+   <addaction name="actionIsotropic"/>
+   <addaction name="actionSobel"/>
+   <addaction name="actionButter_Worth_HP_Filter"/>
+   <addaction name="actionIdeal_High_Pass_Filter"/>
+   <addaction name="separator"/>
+   <addaction name="actionGradiant"/>
+   <addaction name="actionRoberts"/>
+   <addaction name="actionSobel_In_ED"/>
+   <addaction name="actionLaplace8"/>
+   <addaction name="separator"/>
+   <addaction name="actionLinearity"/>
+   <addaction name="separator"/>
    <addaction name="actionAbout"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
@@ -1258,24 +1275,6 @@
     <string>Ctrl+A</string>
    </property>
   </action>
-  <action name="actionRename">
-   <property name="icon">
-    <iconset resource="image.qrc">
-     <normaloff>:/MIPS/images/rename.png</normaloff>:/MIPS/images/rename.png</iconset>
-   </property>
-   <property name="text">
-    <string>Rename</string>
-   </property>
-  </action>
-  <action name="actionMark">
-   <property name="icon">
-    <iconset resource="image.qrc">
-     <normaloff>:/MIPS/images/mark.png</normaloff>:/MIPS/images/mark.png</iconset>
-   </property>
-   <property name="text">
-    <string>Mark</string>
-   </property>
-  </action>
   <action name="actionSave">
    <property name="icon">
     <iconset resource="image.qrc">
@@ -1285,128 +1284,184 @@
     <string>Save</string>
    </property>
   </action>
-  <action name="actionBox">
-   <property name="text">
-    <string>Box</string>
-   </property>
-  </action>
-  <action name="actionEight">
-   <property name="text">
-    <string>Eight</string>
-   </property>
-  </action>
-  <action name="actionTen">
-   <property name="text">
-    <string>Ten</string>
-   </property>
-  </action>
   <action name="actionGauss_2">
+   <property name="icon">
+    <iconset resource="image.qrc">
+     <normaloff>:/MIPS/images/gauss.ico</normaloff>:/MIPS/images/gauss.ico</iconset>
+   </property>
    <property name="text">
     <string>Gauss</string>
    </property>
   </action>
   <action name="actionBox_2">
+   <property name="icon">
+    <iconset resource="image.qrc">
+     <normaloff>:/MIPS/images/box.ico</normaloff>:/MIPS/images/box.ico</iconset>
+   </property>
    <property name="text">
     <string>Box</string>
    </property>
   </action>
   <action name="actionEight_2">
+   <property name="icon">
+    <iconset resource="image.qrc">
+     <normaloff>:/MIPS/images/eight.ico</normaloff>:/MIPS/images/eight.ico</iconset>
+   </property>
    <property name="text">
     <string>Eight</string>
    </property>
   </action>
   <action name="actionTen_2">
+   <property name="icon">
+    <iconset resource="image.qrc">
+     <normaloff>:/MIPS/images/ten.ico</normaloff>:/MIPS/images/ten.ico</iconset>
+   </property>
    <property name="text">
     <string>Ten</string>
    </property>
   </action>
   <action name="actionMF9">
+   <property name="icon">
+    <iconset resource="image.qrc">
+     <normaloff>:/MIPS/images/m9.ico</normaloff>:/MIPS/images/m9.ico</iconset>
+   </property>
    <property name="text">
     <string>MF9</string>
    </property>
   </action>
   <action name="actionMF5">
+   <property name="icon">
+    <iconset resource="image.qrc">
+     <normaloff>:/MIPS/images/m5.ico</normaloff>:/MIPS/images/m5.ico</iconset>
+   </property>
    <property name="text">
     <string>MF5</string>
    </property>
   </action>
   <action name="actionIdeal_Low_Pass_Filter">
+   <property name="icon">
+    <iconset resource="image.qrc">
+     <normaloff>:/MIPS/images/ideal lp.ico</normaloff>:/MIPS/images/ideal lp.ico</iconset>
+   </property>
    <property name="text">
     <string>Ideal Low Pass Filter</string>
    </property>
   </action>
   <action name="actionButter_Worth_LP_Filter">
+   <property name="icon">
+    <iconset resource="image.qrc">
+     <normaloff>:/MIPS/images/BWLP.ico</normaloff>:/MIPS/images/BWLP.ico</iconset>
+   </property>
    <property name="text">
     <string>Butter Worth LP Filter</string>
    </property>
   </action>
   <action name="actionIdeal_High_Pass_Filter">
+   <property name="icon">
+    <iconset resource="image.qrc">
+     <normaloff>:/MIPS/images/ideal hp.ico</normaloff>:/MIPS/images/ideal hp.ico</iconset>
+   </property>
    <property name="text">
     <string>Ideal High Pass Filter</string>
    </property>
   </action>
   <action name="actionButter_Worth_HP_Filter">
+   <property name="icon">
+    <iconset resource="image.qrc">
+     <normaloff>:/MIPS/images/BW LP.ico</normaloff>:/MIPS/images/BW LP.ico</iconset>
+   </property>
    <property name="text">
     <string>Butter Worth HP Filter</string>
    </property>
   </action>
   <action name="actionL4">
+   <property name="icon">
+    <iconset resource="image.qrc">
+     <normaloff>:/MIPS/images/L4.ico</normaloff>:/MIPS/images/L4.ico</iconset>
+   </property>
    <property name="text">
     <string>L4</string>
    </property>
   </action>
   <action name="actionL8">
+   <property name="icon">
+    <iconset resource="image.qrc">
+     <normaloff>:/MIPS/images/L8.ico</normaloff>:/MIPS/images/L8.ico</iconset>
+   </property>
    <property name="text">
     <string>L8</string>
    </property>
   </action>
   <action name="actionPrewitt">
+   <property name="icon">
+    <iconset resource="image.qrc">
+     <normaloff>:/MIPS/images/Pre.ico</normaloff>:/MIPS/images/Pre.ico</iconset>
+   </property>
    <property name="text">
     <string>Prewitt</string>
    </property>
   </action>
   <action name="actionIsotropic">
+   <property name="icon">
+    <iconset resource="image.qrc">
+     <normaloff>:/MIPS/images/Iso.ico</normaloff>:/MIPS/images/Iso.ico</iconset>
+   </property>
    <property name="text">
     <string>Isotropic</string>
    </property>
   </action>
   <action name="actionSobel">
+   <property name="icon">
+    <iconset resource="image.qrc">
+     <normaloff>:/MIPS/images/Sob.ico</normaloff>:/MIPS/images/Sob.ico</iconset>
+   </property>
    <property name="text">
     <string>Sobel</string>
    </property>
   </action>
   <action name="actionGradiant">
+   <property name="icon">
+    <iconset resource="image.qrc">
+     <normaloff>:/MIPS/images/gradiant.ico</normaloff>:/MIPS/images/gradiant.ico</iconset>
+   </property>
    <property name="text">
     <string>Gradiant</string>
    </property>
   </action>
   <action name="actionRoberts">
+   <property name="icon">
+    <iconset resource="image.qrc">
+     <normaloff>:/MIPS/images/roberts.ico</normaloff>:/MIPS/images/roberts.ico</iconset>
+   </property>
    <property name="text">
     <string>Roberts</string>
    </property>
   </action>
   <action name="actionSobel_In_ED">
+   <property name="icon">
+    <iconset resource="image.qrc">
+     <normaloff>:/MIPS/images/sobel in ed.ico</normaloff>:/MIPS/images/sobel in ed.ico</iconset>
+   </property>
    <property name="text">
     <string>Sobel In ED</string>
    </property>
   </action>
   <action name="actionLaplace8">
+   <property name="icon">
+    <iconset resource="image.qrc">
+     <normaloff>:/MIPS/images/L8 in ed.ico</normaloff>:/MIPS/images/L8 in ed.ico</iconset>
+   </property>
    <property name="text">
     <string>Laplace8</string>
    </property>
   </action>
   <action name="actionLinearity">
-   <property name="text">
-    <string>Linearity</string>
-   </property>
-  </action>
-  <action name="actionRotate">
    <property name="icon">
     <iconset resource="image.qrc">
-     <normaloff>:/MIPS/images/rotate.png</normaloff>:/MIPS/images/rotate.png</iconset>
+     <normaloff>:/MIPS/images/Line.ico</normaloff>:/MIPS/images/Line.ico</iconset>
    </property>
    <property name="text">
-    <string>Rotate</string>
+    <string>Linearity</string>
    </property>
   </action>
  </widget>

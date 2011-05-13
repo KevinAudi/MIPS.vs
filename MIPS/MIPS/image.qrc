@@ -1,15 +1,35 @@
 <RCC>
   <qresource prefix="/MIPS">
     <file>images/about.png</file>
+    <file>images/box.ico</file>
+    <file>images/BW LP.ico</file>
+    <file>images/BWLP.ico</file>
+    <file>images/eight.ico</file>
+    <file>images/gauss.ico</file>
+    <file>images/gradiant.ico</file>
+    <file>images/ideal hp.ico</file>
+    <file>images/ideal lp.ico</file>
+    <file>images/Iso.ico</file>
+    <file>images/L4.ico</file>
+    <file>images/L8 in ed.ico</file>
+    <file>images/L8.ico</file>
+    <file>images/Line.ico</file>
+    <file>images/m5.ico</file>
+    <file>images/m9.ico</file>
     <file>images/mark.png</file>
-    <file>images/save.png</file>
+    <file>images/Matrix.png</file>
     <file>images/next.png</file>
+    <file>images/Pre.ico</file>
     <file>images/previous.png</file>
-    <file>images/rename.png</file>
+    <file>images/roberts.ico</file>
     <file>images/rotate.png</file>
-    <file>images/zoom-in.png</file>
-    <file>images/zoom-out.png</file>
+    <file>images/save.png</file>
+    <file>images/Sob.ico</file>
+    <file>images/sobel in ed.ico</file>
+    <file>images/ten.ico</file>
     <file>images/zoom-100.png</file>
     <file>images/zoom-fit.png</file>
+    <file>images/zoom-in.png</file>
+    <file>images/zoom-out.png</file>
   </qresource>
 </RCC>
